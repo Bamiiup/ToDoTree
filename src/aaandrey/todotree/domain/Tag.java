@@ -1,47 +1,36 @@
 package aaandrey.todotree.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.OneToMany;
-
-import java.util.Set;
-import java.util.HashSet;
 
 @Entity
-@Table(name = "_USER")
-public class User {
+@Table(name = "TAG")
+public class Tag {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "LOGIN", unique = true, nullable = false)
-	private String login;
+	@Column(name = "NAME", unique = true, nullable = false)
+	private String name;
 
-	@Column(name = "PASSWORD", nullable = false)
-	private String password;
-	
-	@OneToMany(mappedBy = "user")
+	@ManyToMany(mappedBy = "tags")
 	private Set<Todo> todoList = new HashSet<>();
-
-	public String getLogin() {
-		return login;
+	
+	public Tag() {
+		
 	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	
+	public Tag(String name) {
+		this.name = name;
 	}
 
 	public Long getId() {
@@ -52,19 +41,29 @@ public class User {
 		this.id = id;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Set<Todo> getTodoList() {
 		return todoList;
 	}
-	
+
 	public void addTodo(Todo todo) {
 		addTodo(todo, false);
 	}
-	
+
 	public void addTodo(Todo todo, boolean otherSideHasBeenAlreadySet) {
 		getTodoList().add(todo);
-		if(otherSideHasBeenAlreadySet) {
+		if (otherSideHasBeenAlreadySet) {
 			return;
 		}
-		todo.setUser(this, true);
+
+		todo.addTag(this, true);
 	}
+
 }
