@@ -1,9 +1,12 @@
 import UserService from "./../services/UserService";
+import TodoService from "./../services/TodoService";
+import DateUtils from "./../utils/DateUtils";
 
 const startUrl = "http://localhost:8080/ToDoTree/";
 
-const userService = new UserService();
+const userService = new UserService(startUrl);
+const todoService = new TodoService(startUrl);
 
-userService.setStartUrl(startUrl);
+const dateUtils = new DateUtils();
 
-export {userService};
+export {userService, todoService, dateUtils};

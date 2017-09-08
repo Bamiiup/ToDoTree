@@ -1,5 +1,5 @@
 export default class UserService {
-  setStartUrl(startUrl) {
+  constructor(startUrl) {
     this.startUrl = startUrl;
   }
 
