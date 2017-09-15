@@ -67,4 +67,16 @@ public class User {
 		}
 		todo.setUser(this, true);
 	}
+	
+	public void removeTodo(Todo todo) {
+		removeTodo(todo, false);
+	}
+	
+	public void removeTodo(Todo todo, boolean otherSideWasRemoved) {
+		this.getTodoList().remove(todo);
+		if(otherSideWasRemoved) {
+			return;
+		}
+		todo.removeUser(true);
+	}
 }

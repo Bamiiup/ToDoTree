@@ -1,6 +1,7 @@
 package aaandrey.todotree.domain;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -24,11 +25,11 @@ public class Tag {
 
 	@ManyToMany(mappedBy = "tags")
 	private Set<Todo> todoList = new HashSet<>();
-	
+
 	public Tag() {
-		
+
 	}
-	
+
 	public Tag(String name) {
 		this.name = name;
 	}
@@ -64,6 +65,44 @@ public class Tag {
 		}
 
 		todo.addTag(this, true);
+	}
+
+	public void removeTodo(Todo todo) {
+		removeTodo(todo, false);
+	}
+
+	public void removeTodo(Todo todo, boolean otherSideRemoved) {
+		this.getTodoList().remove(todo);
+		if (otherSideRemoved) {
+			return;
+		}
+		todo.removeTag(this, true);
+	}
+
+	public int hash() {
+		return Objects.hash(this.getId(), this.getName());
+	}
+
+	public boolean equals(Object object) {
+		if (object == null) {
+			return false;
+		}
+
+		if (!(object instanceof Tag)) {
+			return false;
+		}
+
+		Tag that = (Tag) object;
+
+		if (!Objects.equals(this.getId(), that.getId())) {
+			return false;
+		}
+
+		if (!Objects.equals(this.getName(), this.getName())) {
+			return false;
+		}
+
+		return true;
 	}
 
 }

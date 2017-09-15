@@ -1,8 +1,12 @@
 package aaandrey.todotree.domain;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +31,7 @@ public class Todo {
 	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "NAME")
+	@Column(name = "NAME", nullable = false)
 	private String name;
 
 	@Column(name = "COMMENT")
@@ -154,5 +158,73 @@ public class Todo {
 		}
 
 		tag.addTodo(this, true);
+	}
+
+	public void setTags(Collection<Tag> tags) {
+		this.removeAllTags();
+		tags.forEach(this::addTag);
+	}
+
+	public void removeAllTags() {
+		getTags().stream().collect(Collectors.toList()).forEach(this::removeTag);
+	}
+
+	public void removeTag(Tag tag) {
+		removeTag(tag, false);
+	}
+
+	public void removeTag(Tag tag, boolean otherSideRemoved) {
+		this.getTags().remove(tag);
+		if (otherSideRemoved) {
+			return;
+		}
+		tag.removeTodo(this, true);
+	}
+
+	public int hash() {
+		return Objects.hash(this.getId(), this.getName(), this.getStartDate(), this.getEndDate());
+	}
+
+	public boolean equals(Object object) {
+		if (object == null) {
+			return false;
+		}
+
+		if (!(object instanceof Todo)) {
+			return false;
+		}
+
+		Todo that = (Todo) object;
+
+		if (!Objects.equals(this.getId(), that.getId())) {
+			return false;
+		}
+
+		if (!Objects.equals(this.getName(), that.getName())) {
+			return false;
+		}
+
+		if (!Objects.equals(this.getStartDate(), that.getStartDate())) {
+			return false;
+		}
+
+		if (!Objects.equals(this.getEndDate(), that.getEndDate())) {
+			return false;
+		}
+
+		return true;
+	}
+	
+	public void removeUser() {
+		removeUser(false);
+	}
+
+	public void removeUser(boolean otherSideWasRemoved) {
+		User user = this.getUser();
+		this.user = null;
+		if(otherSideWasRemoved) {
+			return;
+		}
+		user.removeTodo(this, true);
 	}
 }
