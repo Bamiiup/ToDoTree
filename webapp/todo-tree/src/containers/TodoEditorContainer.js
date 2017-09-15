@@ -21,33 +21,9 @@ export default class TodoEditorContainer extends React.Component {
 
   componentDidMount() {
     if(this.props.mode === "edit") {
-      // todoService.get(this.props.id).then((json) => {
-      //   return json.parse();
-      // }).then(data => {
-      //
-      // });
-      let todo = {
-        "id":this.props.id,
-        "parentId":2,
-        "name":"Edit Todo",
-        "comment":"Comment",
-        "startDate":1504642586430,
-        "endDate":1504642586430,
-        "priority":"high",
-        "important":true,
-        "weight":1000,
-        "userId":1,
-        "tags":[
-          {
-            "id":3,
-            "name":"Super tag",
-            "todoIds":[2,this.props.i]
-          }
-        ]
-      };
-
-      setTimeout(() => {
-
+      todoService.get(this.props.id).then((data) => {
+        return data.json();
+      }).then(todo => {
         let result = Object.assign({}, todo, {
           startDate: dateUtils.formatToHtmlDateInput(new Date(todo.startDate)),
           endDate: dateUtils.formatToHtmlDateInput(new Date(todo.endDate)),
@@ -55,7 +31,7 @@ export default class TodoEditorContainer extends React.Component {
         });
 
         this.setState(result);
-      }, 500);
+      });
     }
   }
 
@@ -97,7 +73,7 @@ export default class TodoEditorContainer extends React.Component {
 
   onChangeImportant = (event) => {
     this.setState({
-      important: event.target.value
+      important: (event.target.value === "yes")
     });
   }
 
@@ -107,8 +83,16 @@ export default class TodoEditorContainer extends React.Component {
     });
   }
 
+  _getFormattedId() {
+    if(!this.props.id) {
+      return null;
+    }
+    return parseInt(this.props.id, 10);
+  }
+
   _getFormattedTodoToService() {
     let todo = {
+      id: this._getFormattedId(),
       name: this.state.name,
       comment: this.state.comment,
       startDate: dateUtils.formatToDate(this.state.startDate),
@@ -130,12 +114,9 @@ export default class TodoEditorContainer extends React.Component {
     }
 
     if(this.props.mode === "edit") {
-      // todoService.update(todo).then(() => {
-      //   this.props.history.goBack();
-      // });
-      setTimeout(() => {
+      todoService.update(todo).then(() => {
         this.props.history.goBack();
-      }, 500);
+      });
     }
   }
 
