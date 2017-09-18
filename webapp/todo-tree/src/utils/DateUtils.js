@@ -4,7 +4,7 @@ export default class DateUtils {
     let year = date.getFullYear();
     let monthIndex = date.getMonth();
     let month = monthIndex < 9 ? ("0" + monthIndex) : monthIndex;
-    let dayIndex = date.getDay();
+    let dayIndex = date.getDate();
     let day = dayIndex < 9 ? ("0" + dayIndex) : dayIndex;
 
     return year + "-" + month + "-" + day;
