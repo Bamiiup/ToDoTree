@@ -4,6 +4,7 @@ import WelcomeContent from './components/WelcomeContent';
 import RegistrationContainer from './containers/RegistrationContainer';
 import AuthenticationContainer from './containers/AuthenticationContainer';
 import TodoEditorPage from './pages/TodoEditorPage';
+import TodoTree from './components/TodoTree';
 
 import {HashRouter, Route} from 'react-router-dom'
 
@@ -19,6 +20,8 @@ class App extends React.Component {
 
           <Route exact path="/todoEditor/new/:parentId?" component={TodoEditorPage} />
           <Route exact path="/todoEditor/edit/:id" component={TodoEditorPage} />
+
+          <Route exact path="/tree" component={TodoTree} />
 
         </div>
       </HashRouter>
