@@ -1,6 +1,44 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
+const createLinks = (props) =>  {
+  if(props.isAuthenticated) {
+    return(
+      <ul className="navbar-nav">
+        <li className="nav-item active">
+          <Link className="nav-link" to="/">Home<span className="sr-only">(current)</span></Link>
+        </li>
+        <li className="nav-item active">
+          <Link className="nav-link" to="/tree">Tree</Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/"
+            onClick={props.onClickLogOut}>
+            Log out
+          </Link>
+        </li>
+      </ul>
+    );
+  } else {
+    return(
+      <ul className="navbar-nav">
+        <li className="nav-item active">
+          <Link className="nav-link" to="/">Home<span className="sr-only">(current)</span></Link>
+        </li>
+        <li className="nav-item active">
+          <Link className="nav-link" to="/registration">Registration</Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/"
+            onClick={props.onClickLogIn}>
+            Log in
+          </Link>
+        </li>
+      </ul>
+    );
+  }
+};
+
 const NavigationBar = (props) => {
   return(
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -9,20 +47,7 @@ const NavigationBar = (props) => {
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul className="navbar-nav">
-          <li className="nav-item active">
-            <Link className="nav-link" to="/">Home<span className="sr-only">(current)</span></Link>
-          </li>
-          <li className="nav-item active">
-            <Link className="nav-link" to="/tree">Tree</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/"
-              onClick={props.onClickLogOutOrIn}>
-              {props.isAuthenticated ? "Log out" : "Log in"}
-            </Link>
-          </li>
-        </ul>
+        {createLinks(props)}
       </div>
     </nav>
   );
