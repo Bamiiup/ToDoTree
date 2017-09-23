@@ -24,30 +24,3 @@ const mainReducer = (state = startState, action) => {
 };
 
 export default mainReducer;
-
-
-/*let state = {
-  server: {
-    user: {
-      isAuthenticated: false
-    },
-    todoById: {
-      12: {
-        parentId: 11,
-        name: "some name"
-      },
-      11: {
-        parentId: null,
-        name: "some name"
-      }
-    }
-  },
-  ui: {
-    authentication: {
-
-    },
-    navigationBar: {
-
-    }
-  }
-};*/

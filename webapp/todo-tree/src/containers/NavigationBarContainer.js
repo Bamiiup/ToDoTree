@@ -10,8 +10,7 @@ class NavigationBarContainer extends React.Component {
   }
 
   onClickLogOut = () => {
-    let action = setIsAuthenticated(false);
-    this.props.dispatch(action);
+    this.props.dispatch(setIsAuthenticated(false));
     localStorage.removeItem("token");
   }
 
@@ -33,9 +32,4 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-//function
-let reduxContainerCreator = connect(mapStateToProps);
-//React component class
-let ReduxNavigationBarContainer = reduxContainerCreator(NavigationBarContainer);
-
-export default ReduxNavigationBarContainer;
+export default connect(mapStateToProps)(NavigationBarContainer);

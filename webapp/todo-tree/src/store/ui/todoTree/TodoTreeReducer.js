@@ -1,9 +1,15 @@
 import {expandType} from './../../../components/Todo';
 let startState = {
-  expandStateOfTodoById: {
-    1: expandType.isExpanded,
-    2: expandType.canNotBeExpanded,
-    3: expandType.canNotBeExpanded
+  uiPartOfTodoById: {
+    1: {
+      expandType: expandType.isExpanded
+    },
+    2: {
+      expandType: expandType.canNotBeExpanded
+    },
+    3: {
+      expandType: expandType.canNotBeExpanded
+    }
   }
 };
 

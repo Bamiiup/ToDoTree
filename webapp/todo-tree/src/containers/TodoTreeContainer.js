@@ -13,21 +13,11 @@ class TodoTreeContainer extends React.Component {
 const mapStateToProps = (state) => {
   var todoById = {};
 
-  Object.getOwnPropertyNames(state.server.todoList.todoById).forEach(id => {
-    let todo = state.server.todoList.todoById[id];
-    let expandType = state.ui.todoTree.expandStateOfTodoById[id];
-    todoById[id] = Object.assign({}, todo, {
-      expandType: expandType,
-      childIds: []
+  Object.values(state.server.todoList.todoById).forEach(todo => {
+    let uiPartOfTodo = state.ui.todoTree.uiPartOfTodoById[todo.id];
+    todoById[todo.id] = Object.assign({}, todo, {
+      expandType: uiPartOfTodo.expandType
     });
-  });
-
-  Object.getOwnPropertyNames(todoById).forEach(id => {
-    let todo = todoById[id];
-    if(todo.parentId) {
-      let parent = todoById[todo.parentId];
-      parent.childIds.push(todo.id);
-    }
   });
 
   return {
