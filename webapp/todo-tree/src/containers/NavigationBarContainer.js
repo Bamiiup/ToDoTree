@@ -6,15 +6,13 @@ import {setIsAuthenticated} from './../store/user/UserActions';
 class NavigationBarContainer extends React.Component {
 
   onClickLogIn = () => {
-    this.props.history.push("/authentication");
+    this.props.history.push("");
   }
 
   onClickLogOut = () => {
     let action = setIsAuthenticated(false);
     this.props.dispatch(action);
     localStorage.removeItem("token");
-
-    this.props.history.push("/");
   }
 
   render() {
