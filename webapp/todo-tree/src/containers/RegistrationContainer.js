@@ -4,6 +4,11 @@ import Registration from './../components/Registration';
 import {connect} from 'react-redux';
 import {setIsAuthenticated} from './../store/server/user/UserActions';
 
+/*
+  TODO: 1. move state to store
+  TODO: 2. handle error from userService.create
+  TODO: 3. handle error from userService.authentication
+*/
 class RegistrationContainer extends React.Component {
   constructor(props) {
     super(props);

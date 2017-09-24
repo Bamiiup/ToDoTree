@@ -2,11 +2,14 @@ import React from 'react';
 import TodoTree from './../components/TodoTree';
 import {connect} from 'react-redux';
 
+/*
+  TODO: 1. finish implementation
+*/
 class TodoTreeContainer extends React.Component {
   render() {
     return(
       <TodoTree
-        {...this.props} 
+        {...this.props}
         indent={20}/>
     );
   }

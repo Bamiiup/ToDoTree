@@ -3,6 +3,12 @@ import TodoEditor from './../components/TodoEditor';
 import {todoService} from "./../appContext/Context";
 import DateUtils from './../utils/DateUtils';
 
+/*
+  TODO: 1. move state to store
+  TODO: 2. handle error from todoService.get
+  TODO: 3. handle error from todoService.create
+  TODO: 4. handle error from todoService.update
+*/
 export default class TodoEditorContainer extends React.Component {
   constructor(props) {
     super(props);

@@ -4,6 +4,10 @@ import Authentication from './../components/Authentication';
 import {connect} from 'react-redux';
 import {setIsAuthenticated} from './../store/server/user/UserActions';
 
+/*
+  TODO: 1. move state to store
+  TODO: 2. handle error from userService.authentication
+*/
 class AuthenticationContainer extends React.Component {
   constructor(props) {
     super(props);
