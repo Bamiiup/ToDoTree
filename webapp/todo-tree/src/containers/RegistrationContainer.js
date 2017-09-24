@@ -1,8 +1,10 @@
 import React from 'react'
 import {userService} from './../appContext/Context'
 import Registration from './../components/Registration';
+import {connect} from 'react-redux';
+import {setIsAuthenticated} from './../store/server/user/UserActions';
 
-export default class RegistrationContainer extends React.Component {
+class RegistrationContainer extends React.Component {
   constructor(props) {
     super(props);
 
@@ -27,6 +29,7 @@ export default class RegistrationContainer extends React.Component {
       return response.text();
     }).then(token => {
       localStorage.setItem("token", token);
+      this.props.dispatch(setIsAuthenticated(true));
       this.props.history.push("/tree");
     });
   }
@@ -42,3 +45,12 @@ export default class RegistrationContainer extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  let props = {
+    isAuthenticated: state.server.user.isAuthenticated
+  };
+  return props;
+};
+
+export default connect(mapStateToProps)(RegistrationContainer);
