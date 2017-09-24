@@ -5,10 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.annotation.Resource;
 import javax.persistence.EntityManager;
-
-import org.springframework.stereotype.Component;
 
 import aaandrey.todotree.domain.Tag;
 import aaandrey.todotree.domain.Todo;
@@ -17,7 +14,6 @@ import aaandrey.todotree.service.annotation.Transactional;
 import aaandrey.todotree.service.domain.PlainTag;
 import aaandrey.todotree.service.domain.PlainTodo;
 import aaandrey.todotree.service.utils.Converter;
-import aaandrey.todotree.service.utils.TransactionUtils;
 
 public class TodoService implements ITodoService {
 

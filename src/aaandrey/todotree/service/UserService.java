@@ -1,11 +1,8 @@
 package aaandrey.todotree.service;
 
 import java.util.List;
-import java.util.function.Function;
 
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import org.springframework.stereotype.Component;
 
