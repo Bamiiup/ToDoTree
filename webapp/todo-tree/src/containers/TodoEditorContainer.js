@@ -1,6 +1,7 @@
 import React from 'react';
 import TodoEditor from './../components/TodoEditor';
-import {dateUtils, todoService} from "./../appContext/Context";
+import {todoService} from "./../appContext/Context";
+import DateUtils from './../utils/DateUtils';
 
 export default class TodoEditorContainer extends React.Component {
   constructor(props) {
@@ -10,8 +11,8 @@ export default class TodoEditorContainer extends React.Component {
       parentId: this.props.parentId,
       name: "",
       comment: "",
-      startDate: dateUtils.formatToHtmlDateInput(new Date()),
-      endDate: dateUtils.formatToHtmlDateInput(new Date()),
+      startDate: DateUtils.formatToHtmlDateInput(new Date()),
+      endDate: DateUtils.formatToHtmlDateInput(new Date()),
       tags: "",
       priority: "medium",
       important: false,
@@ -25,8 +26,8 @@ export default class TodoEditorContainer extends React.Component {
         return data.json();
       }).then(todo => {
         let result = Object.assign({}, todo, {
-          startDate: dateUtils.formatToHtmlDateInput(new Date(todo.startDate)),
-          endDate: dateUtils.formatToHtmlDateInput(new Date(todo.endDate)),
+          startDate: DateUtils.formatToHtmlDateInput(new Date(todo.startDate)),
+          endDate: DateUtils.formatToHtmlDateInput(new Date(todo.endDate)),
           tags: todo.tags.map(tag => (tag.name)).join(",")
         });
 
@@ -95,8 +96,8 @@ export default class TodoEditorContainer extends React.Component {
       id: this._getFormattedId(),
       name: this.state.name,
       comment: this.state.comment,
-      startDate: dateUtils.formatToDate(this.state.startDate),
-      endDate: dateUtils.formatToDate(this.state.endDate),
+      startDate: DateUtils.formatToDate(this.state.startDate),
+      endDate: DateUtils.formatToDate(this.state.endDate),
       tags: this.state.tags.split(",").map(tag => ({name: tag.trim()})),
       priority: this.state.priority,
       important: this.state.important,

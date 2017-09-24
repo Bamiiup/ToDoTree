@@ -1,5 +1,5 @@
 export default class DateUtils {
-  formatToHtmlDateInput(date) {
+  static formatToHtmlDateInput(date) {
 
     let year = date.getFullYear();
     let monthIndex = date.getMonth();
@@ -10,7 +10,7 @@ export default class DateUtils {
     return year + "-" + month + "-" + day;
   }
 
-  formatToDate(htmlDateInput) {
+  static formatToDate(htmlDateInput) {
     let htmlDateInputParts = htmlDateInput.split("-");
     let year = parseInt(htmlDateInputParts[0], 10);
     let month = parseInt(htmlDateInputParts[1], 10);

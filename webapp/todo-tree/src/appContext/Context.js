@@ -11,6 +11,4 @@ const startUrl = "http://localhost:8080/ToDoTree/";
 const userService = new UserService(startUrl);
 const todoService = new TodoService(startUrl);
 
-const dateUtils = new DateUtils();
-
-export {userService, todoService, dateUtils, store};
+export {userService, todoService, store};
