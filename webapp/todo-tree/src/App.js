@@ -8,23 +8,15 @@ import TodoTreeContainer from './containers/TodoTreeContainer';
 
 import {HashRouter, Route} from 'react-router-dom'
 import {Provider} from 'react-redux';
-import store from './store/Store';
-
-import {setIsAuthenticated} from './store/user/UserActions';
+import {store} from './appContext/Context';
+import {setIsAuthenticated} from './store/server/user/UserActions';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     let token = localStorage.getItem("token");
-    let isAuthenticated;
-    if(token) {
-      isAuthenticated = true;
-    } else {
-      isAuthenticated = false;
-    }
-    let action = setIsAuthenticated(isAuthenticated);
-    store.dispatch(action);
+    store.dispatch(setIsAuthenticated(token !== null));
   }
 
   render() {

@@ -1,6 +1,10 @@
 import UserService from "./../services/UserService";
 import TodoService from "./../services/TodoService";
 import DateUtils from "./../utils/DateUtils";
+import { createStore } from 'redux';
+import mainReducer from './../store/MainReducer';
+
+const store = createStore(mainReducer);
 
 const startUrl = "http://localhost:8080/ToDoTree/";
 
@@ -9,4 +13,4 @@ const todoService = new TodoService(startUrl);
 
 const dateUtils = new DateUtils();
 
-export {userService, todoService, dateUtils};
+export {userService, todoService, dateUtils, store};

@@ -4,33 +4,31 @@ import {expandType} from './Todo';
 
 export default class TodoTree extends React.Component {
   createTree(todoById) {
-    return Object.values(todoById).filter(todo => todo.parentId == null).map(todo => {
-      return this.createTreeFromNode(todoById, todo, 0);
-    })
+    let result = [];
+    Object.values(todoById).filter(todo => todo.parentId == null).forEach(todo => {
+      this.createTreeFromNode(todoById, todo, 0, result);
+    });
+    return result;
   }
 
-  createTreeFromNode(todoById, todo, depth) {
-    let paddingLeft = 20 * depth;
-    return (
-      <div>
-        <div style={{paddingLeft: paddingLeft}}>
-          <Todo
-            key={todo.id}
-            name={todo.name}
-            commentIsVisible={true}
-            comment={todo.comment}
-            expandType={todo.expandType}
-            />
-        </div>
-        {todo.expandType === expandType.isExpanded ?
-          todo.childIds.map(id => {
-            let child = todoById[id];
-            return this.createTreeFromNode(todoById, child, depth + 1);
-          }) :
-          null
-        }
+  createTreeFromNode(todoById, todo, depth, result) {
+    let paddingLeft = this.props.indent * depth;
+    result.push(
+      <div style={{paddingLeft: paddingLeft}} key={todo.id}>
+        <Todo
+          name={todo.name}
+          commentIsVisible={true}
+          comment={todo.comment}
+          expandType={todo.expandType}
+          />
       </div>
     );
+    if(todo.expandType === expandType.isExpanded) {
+      todo.childIds.forEach(id => {
+        let child = todoById[id];
+        this.createTreeFromNode(todoById, child, depth + 1, result);
+      });
+    }
   }
 
   render() {

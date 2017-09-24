@@ -123,21 +123,14 @@ export default class TodoEditorContainer extends React.Component {
   render() {
     return(
       <TodoEditor
-        name={this.state.name}
+        {...this.state}
         onChangeName={this.onChangeName}
-        comment={this.state.comment}
         onChangeComment={this.onChangeComment}
-        startDate={this.state.startDate}
         onChangeStartDate={this.onChangeStartDate}
-        endDate={this.state.endDate}
         onChangeEndDate={this.onChangeEndDate}
-        tags={this.state.tags}
         onChangeTags={this.onChangeTags}
-        priority={this.state.priority}
         onChangePriority={this.onChangePriority}
-        important={this.state.important}
         onChangeImportant={this.onChangeImportant}
-        weight={this.state.weight}
         onChangeWeight={this.onChangeWeight}
         onClickSave={this.onClickSave}
         />

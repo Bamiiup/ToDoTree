@@ -2,7 +2,7 @@ import React from 'react'
 import {userService} from './../appContext/Context'
 import Authentication from './../components/Authentication';
 import {connect} from 'react-redux';
-import {setIsAuthenticated} from './../store/user/UserActions';
+import {setIsAuthenticated} from './../store/server/user/UserActions';
 
 class AuthenticationContainer extends React.Component {
   constructor(props) {
@@ -35,9 +35,8 @@ class AuthenticationContainer extends React.Component {
   render() {
     return(
       <Authentication
-        login={this.state.login}
+        {...this.state}
         onChangeLogin={this.onChangeLogin}
-        password={this.state.password}
         onChangePassword={this.onChangePassword}
         onClickEnter={this.onClickEnter}
         />

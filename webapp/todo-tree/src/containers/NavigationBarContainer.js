@@ -1,7 +1,7 @@
 import React from 'react';
 import NavigationBar from './../components/NavigationBar';
 import {connect} from 'react-redux';
-import {setIsAuthenticated} from './../store/user/UserActions';
+import {setIsAuthenticated} from './../store/server/user/UserActions';
 
 class NavigationBarContainer extends React.Component {
 
@@ -17,7 +17,7 @@ class NavigationBarContainer extends React.Component {
   render() {
     return(
       <NavigationBar
-        isAuthenticated={this.props.isAuthenticated}
+        {...this.props}
         onClickLogIn={this.onClickLogIn}
         onClickLogOut={this.onClickLogOut}
         />

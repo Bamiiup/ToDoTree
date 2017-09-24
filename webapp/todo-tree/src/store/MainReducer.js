@@ -1,5 +1,5 @@
-import userReducer from './user/UserReducer';
-import todoReducer from './todo/TodoReducer';
+import userReducer from './server/user/UserReducer';
+import todoReducer from './server/todo/TodoReducer';
 import todoTreeReducer from './ui/todoTree/TodoTreeReducer';
 
 let startState = {

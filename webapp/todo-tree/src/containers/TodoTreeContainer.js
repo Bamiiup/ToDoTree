@@ -5,7 +5,9 @@ import {connect} from 'react-redux';
 class TodoTreeContainer extends React.Component {
   render() {
     return(
-      <TodoTree todoById={this.props.todoById}/>
+      <TodoTree
+        {...this.props} 
+        indent={20}/>
     );
   }
 }

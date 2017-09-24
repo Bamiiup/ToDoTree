@@ -34,9 +34,8 @@ export default class RegistrationContainer extends React.Component {
   render() {
     return(
       <Registration
-        login={this.state.login}
+        {...this.state}
         onChangeLogin={this.onChangeLogin}
-        password={this.state.password}
         onChangePassword={this.onChangePassword}
         onClickSignUp={this.onClickSignUp}
         />
