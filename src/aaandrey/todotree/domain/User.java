@@ -60,9 +60,9 @@ public class User {
 		addTodo(todo, false);
 	}
 	
-	public void addTodo(Todo todo, boolean otherSideHasBeenAlreadySet) {
+	public void addTodo(Todo todo, boolean otherSideWasAffected) {
 		getTodoList().add(todo);
-		if(otherSideHasBeenAlreadySet) {
+		if(otherSideWasAffected) {
 			return;
 		}
 		todo.setUser(this, true);
@@ -72,9 +72,9 @@ public class User {
 		removeTodo(todo, false);
 	}
 	
-	public void removeTodo(Todo todo, boolean otherSideWasRemoved) {
+	public void removeTodo(Todo todo, boolean otherSideWasAffected) {
 		this.getTodoList().remove(todo);
-		if(otherSideWasRemoved) {
+		if(otherSideWasAffected) {
 			return;
 		}
 		todo.removeUser(true);

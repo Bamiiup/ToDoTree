@@ -1,26 +1,30 @@
-import {expandType} from './../../../components/Todo';
 import {SET_TODO_BY_ID, ADD_TODO, REMOVE_TODO} from './../../server/todo/TodoActions';
-import {UPDATE_UI_PART_OF_TODO} from './UiTodoActions';
+import {UPDATE_UI_TODO} from './UiTodoActions';
 
+const expandTypes = {
+  isExpanded: "isExpanded",
+  isNotExpanded: "isNotExpanded",
+  canNotBeExpanded: "canNotBeExpanded"
+}
 
 let startState = {
-  uiPartOfTodoById: {}
+  uiTodoById: {}
 };
 
 const defineTodoExpandType = (todo) => {
   if(todo.childIds.length === 0) {
-    return expandType.canNotBeExpanded;
+    return expandTypes.canNotBeExpanded;
   } else {
-    return expandType.isExpanded;
+    return expandTypes.isExpanded;
   }
 }
 
-const handleSetTodoById = (action) => {
-  let uiPartOfTodoById = {};
+const setTodoById = (action) => {
+  let uiTodoById = {};
 
   let todoById = action.todoById;
   Object.keys(todoById).forEach(id => {
-    uiPartOfTodoById[id] = {
+    uiTodoById[id] = {
       id: id,
       expandType: defineTodoExpandType(todoById[id]),
       isDetailed: false
@@ -28,22 +32,22 @@ const handleSetTodoById = (action) => {
   });
 
   return {
-    uiPartOfTodoById
+    uiTodoById
   };
 };
 
-const handleAddTodo = (state, action) => {
+const addTodo = (state, action) => {
   let todo = action.todo;
-  let uiPartOfTodoById = state.uiPartOfTodoById;
-  let parentTodo = uiPartOfTodoById[todo.parentId];
+  let uiTodoById = state.uiTodoById;
+  let parentTodo = uiTodoById[todo.parentId];
   let result;
   if(parentTodo) {
     result = {
-      uiPartOfTodoById: {
-        ...uiPartOfTodoById,
+      uiTodoById: {
+        ...uiTodoById,
         [todo.parentId]: {
           ...parentTodo,
-          expandType: expandType.isExpanded
+          expandType: expandTypes.isExpanded
         },
         [todo.id]: {
           id: todo.id,
@@ -54,8 +58,8 @@ const handleAddTodo = (state, action) => {
     };
   } else {
     result = {
-      uiPartOfTodoById: {
-        ...uiPartOfTodoById,
+      uiTodoById: {
+        ...uiTodoById,
         [todo.id]: {
           id: todo.id,
           expandType: defineTodoExpandType(todo),
@@ -68,15 +72,15 @@ const handleAddTodo = (state, action) => {
   return result;
 };
 
-const handleUpdateUiPartOfTodo = (state, action) => {
-  let newUiPartOfTodo = action.uiPartOfTodo;
-  let oldUiPartOfTodo = state.uiPartOfTodoById[newUiPartOfTodo.id];
+const updateUiTodo = (state, action) => {
+  let newUiTodo = action.uiTodo;
+  let oldUiTodo = state.uiTodoById[newUiTodo.id];
   let result = {
-    uiPartOfTodoById: {
-      ...state.uiPartOfTodoById,
-      [newUiPartOfTodo.id]: {
-        ...oldUiPartOfTodo,
-        ...newUiPartOfTodo
+    uiTodoById: {
+      ...state.uiTodoById,
+      [newUiTodo.id]: {
+        ...oldUiTodo,
+        ...newUiTodo
       }
     }
   };
@@ -85,48 +89,55 @@ const handleUpdateUiPartOfTodo = (state, action) => {
   return result;
 };
 
-const handleRemoveTodo = (state, action, serverTodoListState) => {
-  let uiPartOfTodoById = {...state.uiPartOfTodoById};
+const removeTodo = (state, action, serverTodoListState) => {
+  let uiTodoById = {...state.uiTodoById};
   const todoById = serverTodoListState.todoById;
   const todo = todoById[action.id];
 
-  removeTodo(uiPartOfTodoById, todoById, todo);
+  recursivelyRemoveTodo(uiTodoById, todoById, todo);
 
   let result = {
-    uiPartOfTodoById
+    uiTodoById
   };
 
   return result;
 };
 
-const removeTodo = (uiPartOfTodoById, todoById, todo) => {
-  if(todo.childIds.length === 0) {
-    delete uiPartOfTodoById[todo.id];
-    return;
+const recursivelyRemoveTodo = (uiTodoById, todoById, todo) => {
+  if(todo.childIds.length !== 0) {
+    todo.childIds.forEach(childId => recursivelyRemoveTodo(uiTodoById, todoById, todoById[childId]));
   }
 
-  todo.childIds.forEach(child => removeTodo(uiPartOfTodoById, todoById, child));
-  delete uiPartOfTodoById[todo.id];
+  delete uiTodoById[todo.id];
+  
+  const parentUiTodo = uiTodoById[todo.parentId];
+  if(parentUiTodo) {
+    uiTodoById[todo.parentId] = {
+      ...parentUiTodo,
+      expandType: expandTypes.canNotBeExpanded
+    };
+  }
 }
 
 const todoTreeReducer = (state = startState, action, serverTodoListState) => {
   if(action.type === SET_TODO_BY_ID) {
-    return handleSetTodoById(action);
+    return setTodoById(action);
   }
 
   if(action.type === ADD_TODO) {
-    return handleAddTodo(state, action);
+    return addTodo(state, action);
   }
 
-  if(action.type === UPDATE_UI_PART_OF_TODO) {
-    return handleUpdateUiPartOfTodo(state, action);
+  if(action.type === UPDATE_UI_TODO) {
+    return updateUiTodo(state, action);
   }
 
   if(action.type === REMOVE_TODO) {
-    return handleRemoveTodo(state, action, serverTodoListState);
+    return removeTodo(state, action, serverTodoListState);
   }
 
   return state;
 };
 
 export default todoTreeReducer;
+export {expandTypes};

@@ -58,9 +58,9 @@ public class Tag {
 		addTodo(todo, false);
 	}
 
-	public void addTodo(Todo todo, boolean otherSideHasBeenAlreadySet) {
+	public void addTodo(Todo todo, boolean otherSideWasAffected) {
 		getTodoList().add(todo);
-		if (otherSideHasBeenAlreadySet) {
+		if (otherSideWasAffected) {
 			return;
 		}
 
@@ -71,9 +71,9 @@ public class Tag {
 		removeTodo(todo, false);
 	}
 
-	public void removeTodo(Todo todo, boolean otherSideRemoved) {
+	public void removeTodo(Todo todo, boolean otherSideWasAffected) {
 		this.getTodoList().remove(todo);
-		if (otherSideRemoved) {
+		if (otherSideWasAffected) {
 			return;
 		}
 		todo.removeTag(this, true);

@@ -1,22 +1,17 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-
-const expandType = {
-  isExpanded: "isExpanded",
-  isNotExpanded: "isNotExpanded",
-  canNotBeExpanded: "canNotBeExpanded"
-}
+import {expandTypes} from './../store/ui/todoTree/TodoTreeReducer';
 
 export default class Todo extends React.Component {
 
   onClickMinus = () => {
     let id = this.props.id;
-    this.props.onClickExpand(id, expandType.isNotExpanded);
+    this.props.onClickExpand(id, expandTypes.isNotExpanded);
   }
 
   onClickPlus = () => {
     let id = this.props.id;
-    this.props.onClickExpand(id, expandType.isExpanded);
+    this.props.onClickExpand(id, expandTypes.isExpanded);
   }
 
   onClickTodo = () => {
@@ -35,20 +30,20 @@ export default class Todo extends React.Component {
   }
 
   getExpandSpan(expandType) {
-    if(expandType === "isExpanded") {
+    if(expandType === expandTypes.isExpanded) {
       return(
         <span className="oi oi-minus" style={{cursor: "pointer", color: "#C98989"}}
           onClick={this.onClickMinus}>
         </span>
       );
     }
-    if(expandType === "isNotExpanded") {
+    if(expandType === expandTypes.isNotExpanded) {
       return(
         <span className="oi oi-plus" style={{cursor: "pointer", color: "#88a586"}}
           onClick={this.onClickPlus}></span>
       );
     }
-    if(expandType === "canNotBeExpanded") {
+    if(expandType === expandTypes.canNotBeExpanded) {
       return null;
     }
 
@@ -105,5 +100,3 @@ export default class Todo extends React.Component {
     );
   }
 };
-
-export {expandType};

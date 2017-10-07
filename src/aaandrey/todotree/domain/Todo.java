@@ -143,9 +143,9 @@ public class Todo {
 		setUser(user, false);
 	}
 
-	public void setUser(User user, boolean otherSideHasBeenAlreadySet) {
+	public void setUser(User user, boolean otherSideWasAffected) {
 		this.user = user;
-		if (otherSideHasBeenAlreadySet) {
+		if (otherSideWasAffected) {
 			return;
 		}
 		user.addTodo(this, true);
@@ -159,9 +159,9 @@ public class Todo {
 		addTag(tag, false);
 	}
 
-	public void addTag(Tag tag, boolean otherSideHasBeenAlreadySet) {
+	public void addTag(Tag tag, boolean otherSideWasAffected) {
 		getTags().add(tag);
-		if (otherSideHasBeenAlreadySet) {
+		if (otherSideWasAffected) {
 			return;
 		}
 
@@ -181,9 +181,9 @@ public class Todo {
 		removeTag(tag, false);
 	}
 
-	public void removeTag(Tag tag, boolean otherSideRemoved) {
+	public void removeTag(Tag tag, boolean otherSideWasAffected) {
 		this.getTags().remove(tag);
-		if (otherSideRemoved) {
+		if (otherSideWasAffected) {
 			return;
 		}
 		tag.removeTodo(this, true);
@@ -301,10 +301,10 @@ public class Todo {
 		removeUser(false);
 	}
 
-	public void removeUser(boolean otherSideWasRemoved) {
+	public void removeUser(boolean otherSideWasAffected) {
 		User user = this.getUser();
 		this.user = null;
-		if (otherSideWasRemoved) {
+		if (otherSideWasAffected) {
 			return;
 		}
 		user.removeTodo(this, true);

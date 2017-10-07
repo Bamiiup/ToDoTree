@@ -1,6 +1,6 @@
 import React from 'react';
 import Todo from './Todo';
-import {expandType} from './Todo';
+import {expandTypes} from './../store/ui/todoTree/TodoTreeReducer';
 
 export default class TodoTree extends React.Component {
   createTree(todoById) {
@@ -24,7 +24,7 @@ export default class TodoTree extends React.Component {
           />
       </div>
     );
-    if(todo.expandType === expandType.isExpanded) {
+    if(todo.expandType === expandTypes.isExpanded) {
       todo.childIds.forEach(id => {
         let child = todoById[id];
         this.createTreeFromNode(todoById, child, depth + 1, result);

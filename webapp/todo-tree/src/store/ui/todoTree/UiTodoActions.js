@@ -1,10 +1,10 @@
-const UPDATE_UI_PART_OF_TODO = "UPDATE_UI_PART_OF_TODO";
+const UPDATE_UI_TODO = "UPDATE_UI_TODO";
 
-const updateUiPartOfTodo = (uiPartOfTodo) => {
+const updateUiTodo = (uiTodo) => {
   return {
-    type: UPDATE_UI_PART_OF_TODO,
-    uiPartOfTodo: uiPartOfTodo
+    type: UPDATE_UI_TODO,
+    uiTodo: uiTodo
   };
 }
 
-export {UPDATE_UI_PART_OF_TODO, updateUiPartOfTodo};
+export {UPDATE_UI_TODO, updateUiTodo};

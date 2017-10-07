@@ -1,6 +1,6 @@
 import {SET_TODO_BY_ID, ADD_TODO, UPDATE_TODO, REMOVE_TODO} from './TodoActions';
 
-const todoByIdStateType = {
+const todoByIdStates = {
   empty: "empty",
   loading: "loading",
   loaded: "loaded",
@@ -8,11 +8,11 @@ const todoByIdStateType = {
 };
 
 const startState = {
-  state: todoByIdStateType.empty,
+  state: todoByIdStates.empty,
   todoById: {}
 };
 
-const handleAddTodo = (state, action) => {
+const addTodo = (state, action) => {
   let todo = action.todo;
   let todoById = state.todoById;
   let parentTodo = todoById[todo.parentId];
@@ -42,7 +42,7 @@ const handleAddTodo = (state, action) => {
   }
 };
 
-const handleUpdateTodo = (state, action) => {
+const updateTodo = (state, action) => {
   let todoById = state.todoById;
   let newTodo = action.todo;
   let oldTodo = todoById[newTodo.id];
@@ -59,11 +59,11 @@ const handleUpdateTodo = (state, action) => {
   };
 };
 
-const handleRemoveTodo = (state, action) => {
+const removeTodo = (state, action) => {
   let todoById = {...state.todoById};
   let todo = todoById[action.id];
 
-  removeTodo(todoById, todo);
+  recursivelyRemoveTodo(todoById, todo);
 
   let result = {
     state: state.state,
@@ -73,29 +73,18 @@ const handleRemoveTodo = (state, action) => {
   return result;
 }
 
-const removeTodo = (todoById, todo) => {
-  if(todo.childIds.length === 0) {
-    delete todoById[todo.id];
-
-    const parentTodo = todoById[todo.parentId];
-    if(parentTodo) {
-      todoById[todo.parentId] = {
-        ...parentTodo,
-        childIds: parentTodo.childIds.filter(childId => (childId != todo.id))
-      };
-
-    }
-    return;
+const recursivelyRemoveTodo = (todoById, todo) => {
+  if(todo.childIds.length !== 0) {
+    todo.childIds.forEach(childId => recursivelyRemoveTodo(todoById, todoById[childId]));
   }
 
-  todo.childIds.forEach(child => removeTodo(todoById, child));
   delete todoById[todo.id];
 
   const parentTodo = todoById[todo.parentId];
   if(parentTodo) {
     todoById[todo.parentId] = {
       ...parentTodo,
-      childIds: parentTodo.childIds.filter(child => child.id != todo.id)
+      childIds: parentTodo.childIds.filter(childId => (childId !== todo.id))
     };
   }
 }
@@ -103,25 +92,25 @@ const removeTodo = (todoById, todo) => {
 const todoReducer = (state = startState, action) => {
   if(action.type === SET_TODO_BY_ID) {
     return {
-      state: todoByIdStateType.loaded,
+      state: todoByIdStates.loaded,
       todoById: action.todoById
     };
   }
 
   if(action.type === ADD_TODO) {
-    return handleAddTodo(state, action);
+    return addTodo(state, action);
   }
 
   if(action.type === UPDATE_TODO) {
-    return handleUpdateTodo(state, action);
+    return updateTodo(state, action);
   }
 
   if(action.type === REMOVE_TODO) {
-    return handleRemoveTodo(state, action);
+    return removeTodo(state, action);
   }
 
   return state;
 }
 
 export default todoReducer;
-export {todoByIdStateType};
+export {todoByIdStates};

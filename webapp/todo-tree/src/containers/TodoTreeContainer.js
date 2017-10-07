@@ -1,10 +1,10 @@
 import React from 'react';
 import TodoTree from './../components/TodoTree';
 import {connect} from 'react-redux';
-import {todoByIdStateType} from './../store/server/todo/TodoReducer';
+import {todoByIdStates} from './../store/server/todo/TodoReducer';
 import {todoService} from './../appContext/Context';
 import {setTodoById, updateTodo, removeTodo} from './../store/server/todo/TodoActions';
-import {updateUiPartOfTodo} from './../store/ui/todoTree/UiTodoActions';
+import {updateUiTodo} from './../store/ui/todoTree/UiTodoActions';
 
 /*
   TODO: 1. finish implementation
@@ -13,8 +13,8 @@ class TodoTreeContainer extends React.Component {
   componentDidMount() {
     let todoByIdState = this.props.todoByIdState;
 
-    if(todoByIdState !== todoByIdStateType.empty
-      && todoByIdState !== todoByIdStateType.outOfDate) {
+    if(todoByIdState !== todoByIdStates.empty
+      && todoByIdState !== todoByIdStates.outOfDate) {
       return;
     }
 
@@ -33,14 +33,14 @@ class TodoTreeContainer extends React.Component {
   }
 
   onClickExpand = (id, expandType) => {
-    this.props.dispatch(updateUiPartOfTodo({
+    this.props.dispatch(updateUiTodo({
       id,
       expandType
     }));
   }
 
   onClickTodo = (id) => {
-    this.props.dispatch(updateUiPartOfTodo({
+    this.props.dispatch(updateUiTodo({
       id,
       isDetailed: !this.props.todoById[id].isDetailed
     }));
@@ -81,10 +81,10 @@ const mapStateToProps = (state) => {
   var todoById = {};
 
   Object.values(state.server.todoList.todoById).forEach(todo => {
-    let uiPartOfTodo = state.ui.todoTree.uiPartOfTodoById[todo.id];
+    let uiTodo = state.ui.todoTree.uiTodoById[todo.id];
     todoById[todo.id] = Object.assign({}, todo, {
-      expandType: uiPartOfTodo.expandType,
-      isDetailed: uiPartOfTodo.isDetailed
+      expandType: uiTodo.expandType,
+      isDetailed: uiTodo.isDetailed
     });
   });
 
