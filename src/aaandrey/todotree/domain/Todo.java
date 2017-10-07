@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -53,6 +55,13 @@ public class Todo {
 
 	@Column(name = "WEIGHT")
 	private Long weight;
+
+	@ManyToOne
+	@JoinColumn(name = "PARENT_ID")
+	private Todo parent;
+
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+	private Set<Todo> children = new HashSet<>();
 
 	@ManyToOne
 	@JoinColumn(name = "USER_ID", nullable = false)
@@ -180,6 +189,80 @@ public class Todo {
 		tag.removeTodo(this, true);
 	}
 
+	public Set<Todo> getChildren() {
+		return this.children;
+	}
+
+	public void setChildren(Set<Todo> children) {
+		removeChildren();
+		children.forEach(this::addChild);
+	}
+
+	public void removeChildren() {
+		this.getChildren().stream().collect(Collectors.toList()).forEach(this::removeChild);
+	}
+
+	public void removeChild(Todo child) {
+		removeChild(child, false);
+	}
+
+	private void removeChild(Todo child, boolean otherSideWasAffected) {
+		this.getChildren().remove(child);
+		if (otherSideWasAffected) {
+			return;
+		}
+		child.removeParent(true);
+	}
+
+	public void addChild(Todo child) {
+		addChild(child, false);
+	}
+
+	private void addChild(Todo child, boolean otherSideWasAffected) {
+		this.getChildren().add(child);
+		if (otherSideWasAffected) {
+			return;
+		}
+		child.setParent(this, true);
+	}
+
+	public Todo getParent() {
+		return this.parent;
+	}
+
+	public void setParent(Todo parent) {
+		if (parent == null) {
+			removeParent();
+		} else {
+			setParent(parent, false);
+		}
+	}
+
+	public void removeParent() {
+		removeParent(false);
+	}
+
+	private void removeParent(boolean otherSideWasAffected) {
+		Todo parent = getParent();
+		if (parent == null) {
+			return;
+		}
+
+		this.parent = null;
+		if (otherSideWasAffected) {
+			return;
+		}
+		parent.removeChild(this, true);
+	}
+
+	private void setParent(Todo parent, boolean otherSideWasAffected) {
+		this.parent = parent;
+		if (otherSideWasAffected) {
+			return;
+		}
+		parent.addChild(this, true);
+	}
+
 	public int hash() {
 		return Objects.hash(this.getId(), this.getName(), this.getStartDate(), this.getEndDate());
 	}
@@ -213,7 +296,7 @@ public class Todo {
 
 		return true;
 	}
-	
+
 	public void removeUser() {
 		removeUser(false);
 	}
@@ -221,7 +304,7 @@ public class Todo {
 	public void removeUser(boolean otherSideWasRemoved) {
 		User user = this.getUser();
 		this.user = null;
-		if(otherSideWasRemoved) {
+		if (otherSideWasRemoved) {
 			return;
 		}
 		user.removeTodo(this, true);

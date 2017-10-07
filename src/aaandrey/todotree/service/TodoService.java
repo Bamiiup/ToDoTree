@@ -6,17 +6,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import aaandrey.todotree.domain.Tag;
 import aaandrey.todotree.domain.Todo;
 import aaandrey.todotree.domain.User;
-import aaandrey.todotree.service.annotation.Transactional;
 import aaandrey.todotree.service.domain.PlainTag;
 import aaandrey.todotree.service.domain.PlainTodo;
 import aaandrey.todotree.service.utils.Converter;
 
+@Component
 public class TodoService implements ITodoService {
-
+	@PersistenceContext
 	private EntityManager entityManager;
 
 	// TODO: implement this
@@ -45,7 +49,7 @@ public class TodoService implements ITodoService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<PlainTodo> getList(Long userId) {
 		List<Todo> todoList = entityManager
 				.createQuery("SELECT todo FROM Todo todo JOIN todo.user user WHERE user.id = :userId", Todo.class)
@@ -68,8 +72,19 @@ public class TodoService implements ITodoService {
 		todo.setStartDate((Date) plainTodo.getStartDate().clone());
 		todo.setWeight(plainTodo.getWeight());
 		todo.setTags(findOrCreate(entityManager, plainTodo.getTags()));
+		todo.setChildren(
+				plainTodo.getChildIds().stream().map(id -> entityManager.find(Todo.class, id)).collect(Collectors.toSet()));
+		setParent(todo, plainTodo.getParentId());
 
 		return Converter.toPlainTodo(todo);
+	}
+
+	private void setParent(Todo target, Long parentId) {
+		if (parentId == null) {
+			target.removeParent();
+		} else {
+			target.setParent(entityManager.find(Todo.class, parentId));
+		}
 	}
 
 	// TODO: implement this
@@ -83,7 +98,7 @@ public class TodoService implements ITodoService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public PlainTodo get(Long userId, Long todoId) {
 		return get(entityManager, userId, todoId);
 	}
@@ -134,6 +149,7 @@ public class TodoService implements ITodoService {
 		todo.setName(plainTodo.getName());
 		todo.setPriority(plainTodo.getPriority());
 		todo.setWeight(plainTodo.getWeight());
+		setParent(todo, plainTodo.getParentId());
 
 		User user = entityManager.find(User.class, userId);
 		todo.setUser(user);

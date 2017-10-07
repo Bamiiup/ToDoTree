@@ -21,8 +21,18 @@ public class Converter {
 		plainTodo.setTags(todo.getTags().stream().map(Converter::toPlainTag).collect(Collectors.toSet()));
 		plainTodo.setUserId(todo.getUser().getId());
 		plainTodo.setWeight(todo.getWeight());
+		plainTodo.setChildIds(todo.getChildren().stream().map(child -> child.getId()).collect(Collectors.toSet()));
+		setParentId(plainTodo, todo.getParent());
 
 		return plainTodo;
+	}
+
+	private static void setParentId(PlainTodo target, Todo parent) {
+		if (parent == null) {
+			target.setParentId(null);
+		} else {
+			target.setParentId(parent.getId());
+		}
 	}
 
 	public static PlainTag toPlainTag(Tag tag) {

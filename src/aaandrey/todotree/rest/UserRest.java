@@ -40,11 +40,11 @@ public class UserRest {
 	@RequestMapping(path = "/authentication", method = RequestMethod.POST)
 	public ResponseEntity<String> authentication(@RequestBody User user) {
 		User authenticationUser = userService.findUserByLoginAndPassword(user.getLogin(), user.getPassword());
-		
-		if(authenticationUser == null) {
+
+		if (authenticationUser == null) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		
+
 		String token = createToken(authenticationUser);
 		return new ResponseEntity<>(token, HttpStatus.OK);
 	}
@@ -52,9 +52,9 @@ public class UserRest {
 	private String createToken(User user) {
 		Date createdTime = Calendar.getInstance().getTime();
 		TokenPayload payload = new TokenPayload(user.getId(), user.getLogin(), createdTime);
-		
+
 		String token = tokenManager.createToken(payload);
-		
+
 		return token;
 	}
 }

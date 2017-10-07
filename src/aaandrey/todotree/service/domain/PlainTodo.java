@@ -23,6 +23,10 @@ public class PlainTodo {
 
 	private Long weight;
 
+	private Long parentId;
+
+	private Set<Long> childIds = new HashSet<>();
+
 	private Long userId;
 
 	private Set<PlainTag> tags = new HashSet<>();
@@ -89,6 +93,22 @@ public class PlainTodo {
 
 	public void setWeight(Long weight) {
 		this.weight = weight;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	public Set<Long> getChildIds() {
+		return childIds;
+	}
+
+	public void setChildIds(Set<Long> childIds) {
+		this.childIds = childIds;
 	}
 
 	public Long getUserId() {
