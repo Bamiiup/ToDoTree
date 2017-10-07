@@ -16,10 +16,11 @@ export default class TodoTree extends React.Component {
     result.push(
       <div style={{paddingLeft: paddingLeft}} key={todo.id}>
         <Todo
-          name={todo.name}
-          commentIsVisible={true}
-          comment={todo.comment}
-          expandType={todo.expandType}
+          {...todo}
+          onClickExpand={this.props.onClickExpand}
+          onClickTodo={this.props.onClickTodo}
+          onClickImportantFlag={this.props.onClickImportantFlag}
+          onClickRemove={this.props.onClickRemove}
           />
       </div>
     );
@@ -35,7 +36,7 @@ export default class TodoTree extends React.Component {
     return(
       <div className="container" style={{marginTop: "20px"}}>
         <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-end",alignItems: "center"}}>
-          <button type="button" className="btn btn-light btn-sm">
+          <button type="button" className="btn btn-light btn-sm" onClick={this.props.onClickNew}>
             <span className="oi oi-plus" style={{color: "#88a586", fontSize: "10pt"}}></span> New
           </button>
         </div>

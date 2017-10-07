@@ -21,7 +21,7 @@ export default class TodoEditorPage extends React.Component {
         history={this.props.history}
         mode={this.getMode()}
         id={this.props.match.params.id}
-        parentId={this.props.match.parentId}/>
+        parentId={this.props.match.params.parentId}/>
     );
   }
 }

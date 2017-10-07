@@ -34,4 +34,24 @@ export default class TodoService {
       body: JSON.stringify(todo)
     });
   }
+
+  getList() {
+    return fetch(this.startUrl + "todoList", {
+      method: "get",
+      headers: new Headers({
+        "Content-type": "application/json;chartSet=UTF-8",
+        "token": localStorage.getItem("token")
+	    })
+    });
+  }
+
+  remove(id) {
+    return fetch(this.startUrl + "todo/" + id, {
+      method: "delete",
+      headers: new Headers({
+        "Content-type": "application/json;chartSet=UTF-8",
+        "token": localStorage.getItem("token")
+	    })
+    });
+  }
 }

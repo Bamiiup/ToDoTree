@@ -2,6 +2,8 @@ import React from 'react';
 import TodoEditor from './../components/TodoEditor';
 import {todoService} from "./../appContext/Context";
 import DateUtils from './../utils/DateUtils';
+import {addTodo, updateTodo} from './../store/server/todo/TodoActions';
+import {connect} from 'react-redux';
 
 /*
   TODO: 1. move state to store
@@ -9,7 +11,7 @@ import DateUtils from './../utils/DateUtils';
   TODO: 3. handle error from todoService.create
   TODO: 4. handle error from todoService.update
 */
-export default class TodoEditorContainer extends React.Component {
+class TodoEditorContainer extends React.Component {
   constructor(props) {
     super(props);
 
@@ -100,6 +102,7 @@ export default class TodoEditorContainer extends React.Component {
   _getFormattedTodoToService() {
     let todo = {
       id: this._getFormattedId(),
+      parentId: this.state.parentId,
       name: this.state.name,
       comment: this.state.comment,
       startDate: DateUtils.formatToDate(this.state.startDate),
@@ -115,13 +118,15 @@ export default class TodoEditorContainer extends React.Component {
   onClickSave = () => {
     let todo = this._getFormattedTodoToService();
     if(this.props.mode === "new") {
-      todoService.create(todo).then(() => {
+      todoService.create(todo).then(data => data.json()).then((todo) => {
+        this.props.dispatch(addTodo(todo));
         this.props.history.goBack();
       });
     }
 
     if(this.props.mode === "edit") {
-      todoService.update(todo).then(() => {
+      todoService.update(todo).then(data => data.json()).then((todo) => {
+        this.props.dispatch(updateTodo(todo));
         this.props.history.goBack();
       });
     }
@@ -144,3 +149,11 @@ export default class TodoEditorContainer extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+
+  };
+};
+
+export default connect(mapStateToProps)(TodoEditorContainer);

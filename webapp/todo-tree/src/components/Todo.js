@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const expandType = {
   isExpanded: "isExpanded",
@@ -7,15 +8,44 @@ const expandType = {
 }
 
 export default class Todo extends React.Component {
+
+  onClickMinus = () => {
+    let id = this.props.id;
+    this.props.onClickExpand(id, expandType.isNotExpanded);
+  }
+
+  onClickPlus = () => {
+    let id = this.props.id;
+    this.props.onClickExpand(id, expandType.isExpanded);
+  }
+
+  onClickTodo = () => {
+    let id = this.props.id;
+    this.props.onClickTodo(id);
+  }
+
+  onClickImportantFlag = () => {
+    let id = this.props.id;
+    this.props.onClickImportantFlag(id);
+  }
+
+  onClickRemove = () => {
+    let id = this.props.id;
+    this.props.onClickRemove(id);
+  }
+
   getExpandSpan(expandType) {
     if(expandType === "isExpanded") {
       return(
-        <span className="oi oi-minus" style={{cursor: "pointer", color: "#C98989"}}></span>
+        <span className="oi oi-minus" style={{cursor: "pointer", color: "#C98989"}}
+          onClick={this.onClickMinus}>
+        </span>
       );
     }
     if(expandType === "isNotExpanded") {
       return(
-        <span className="oi oi-plus" style={{cursor: "pointer", color: "#88a586"}}></span>
+        <span className="oi oi-plus" style={{cursor: "pointer", color: "#88a586"}}
+          onClick={this.onClickPlus}></span>
       );
     }
     if(expandType === "canNotBeExpanded") {
@@ -25,8 +55,16 @@ export default class Todo extends React.Component {
     return null;
   }
 
+  getImportantFlagStyle() {
+    if(this.props.important) {
+      return {color: "red"};
+    } else {
+      return {color: "grey"};
+    }
+  }
+
   render() {
-    const {name, commentIsVisible, comment, expandType} = this.props;
+    const {name, isDetailed, comment, expandType} = this.props;
     return(
       <div style={{marginTop: "5px", padding: "4px", borderRadius: "5px", border: "2px solid #e3e6ea"}}>
         <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between",alignItems: "center"}}>
@@ -34,12 +72,15 @@ export default class Todo extends React.Component {
             {this.getExpandSpan(expandType)}
           </div>
           <div style={{flexGrow: 1}}>
-            <span className="font-weight-bold" style={{cursor: "pointer"}}>
+            <span className="font-weight-bold" style={{cursor: "pointer"}}
+              onClick={this.onClickTodo}>
               {name}
             </span>
           </div>
           <div style={{width: "20px", fontSize: "10pt"}}>
-            <span className="oi oi-flag" style={{color: "grey"}}></span>
+            <span className="oi oi-flag" style={this.getImportantFlagStyle()}
+              onClick={this.onClickImportantFlag}>
+            </span>
           </div>
           <div style={{width: "30px"}}>
             <div className="btn-group" role="group">
@@ -47,15 +88,15 @@ export default class Todo extends React.Component {
 
               </button>
               <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a className="dropdown-item" href="#">Complete</a>
-                <a className="dropdown-item" href="#">New</a>
-                <a className="dropdown-item" href="#">Edit</a>
-                <a className="dropdown-item" href="#">Remove</a>
+                <Link className="dropdown-item" to="/">Complete</Link>
+                <Link className="dropdown-item" to={"/todoEditor/new/" + this.props.id}>New</Link>
+                <Link className="dropdown-item" to={"/todoEditor/edit/" + this.props.id}>Edit</Link>
+                <span className="dropdown-item" onClick={this.onClickRemove}>Remove</span>
               </div>
             </div>
           </div>
         </div>
-        {commentIsVisible ? (
+        {isDetailed ? (
           <div style={{marginLeft: "20px", marginRight: "50px", color: "grey", fontStyle: "italic"}}>
             {comment}
           </div>

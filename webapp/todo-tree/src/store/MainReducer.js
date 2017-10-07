@@ -18,7 +18,7 @@ const mainReducer = (state = startState, action) => {
       todoList: todoReducer(state.server.todoList, action)
     },
     ui: {
-      todoTree: todoTreeReducer(state.ui.todoTree, action)
+      todoTree: todoTreeReducer(state.ui.todoTree, action, state.server.todoList)
     }
   };
 };
