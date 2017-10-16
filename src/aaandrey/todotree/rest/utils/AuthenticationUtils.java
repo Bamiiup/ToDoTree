@@ -2,9 +2,9 @@ package aaandrey.todotree.rest.utils;
 
 import java.util.function.Function;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 import aaandrey.todotree.security.TokenManager;
 import aaandrey.todotree.security.TokenPayload;
 
-@Component("authenticationUtils")
+@Component
 public class AuthenticationUtils {
-	@Resource(name = "tokenManager")
+	@Autowired
 	private TokenManager tokenManager;
-	
+
 	public <R> ResponseEntity<R> peformAfterAuthentication(HttpServletRequest request,
 			Function<Long, ResponseEntity<R>> function) {
 		String token = request.getHeader("token");

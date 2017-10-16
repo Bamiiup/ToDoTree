@@ -10,7 +10,7 @@ import aaandrey.todotree.service.domain.PlainTodo;
 import aaandrey.todotree.service.domain.PlainTodoTreeRepresentation;
 
 public class Converter {
-	public static PlainTodo toPlainTodo(Todo todo) {
+	public static PlainTodo toPlain(Todo todo) {
 		PlainTodo plainTodo = new PlainTodo();
 
 		plainTodo.setComment(todo.getComment());
@@ -20,7 +20,7 @@ public class Converter {
 		plainTodo.setName(todo.getName());
 		plainTodo.setPriority(todo.getPriority());
 		plainTodo.setStartDate(todo.getStartDate());
-		plainTodo.setTags(todo.getTags().stream().map(Converter::toPlainTag).collect(Collectors.toSet()));
+		plainTodo.setTags(todo.getTags().stream().map(Converter::toPlain).collect(Collectors.toSet()));
 		plainTodo.setUserId(todo.getUser().getId());
 		plainTodo.setWeight(todo.getWeight());
 		plainTodo.setChildIds(todo.getChildren().stream().map(child -> child.getId()).collect(Collectors.toSet()));
@@ -37,7 +37,7 @@ public class Converter {
 		}
 	}
 
-	public static PlainTag toPlainTag(Tag tag) {
+	public static PlainTag toPlain(Tag tag) {
 		PlainTag plainTag = new PlainTag();
 
 		plainTag.setId(tag.getId());
@@ -55,7 +55,7 @@ public class Converter {
 		result.setDayAmountAfterToday(representation.getDayAmountAfterToday());
 		result.setId(representation.getId());
 		result.setIsImportant(representation.getIsImportant());
-		result.setTags(representation.getTags().stream().map(Converter::toPlainTag).collect(Collectors.toSet()));
+		result.setTags(representation.getTags().stream().map(Converter::toPlain).collect(Collectors.toSet()));
 		result.setTopPriority(representation.getTopPriority());
 		result.setTopWeight(representation.getTopWeight());
 		result.setUserId(representation.getUser().getId());

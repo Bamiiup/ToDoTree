@@ -3,13 +3,13 @@ package aaandrey.todotree.rest.aspect;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ import aaandrey.todotree.rest.utils.AuthenticationUtils;
 @Component
 @Aspect
 public class AuthenticationAspect {
-	@Resource(name = "authenticationUtils")
+	@Autowired
 	private AuthenticationUtils authenticationUtils;
 
 	@Pointcut("execution(@aaandrey.todotree.rest.aspect.Authenticational * *(..))")

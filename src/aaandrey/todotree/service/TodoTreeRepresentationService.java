@@ -8,21 +8,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import aaandrey.todotree.domain.TodoTreeRepresentation;
-import aaandrey.todotree.repositories.TodoTreeRepresentationCrud;
-import aaandrey.todotree.repositories.UserCrud;
+import aaandrey.todotree.repositories.TodoTreeRepresentationRepository;
+import aaandrey.todotree.repositories.UserRepository;
 import aaandrey.todotree.service.domain.PlainTodoTreeRepresentation;
 import aaandrey.todotree.service.utils.Converter;
 
+//TODO: implement validation and authorization
 @Component
 public class TodoTreeRepresentationService implements ITodoTreeRepresentationService {
 	@Autowired
-	private TodoTreeRepresentationCrud crud;
+	private TodoTreeRepresentationRepository repository;
 
 	@Autowired
-	private UserCrud userCrud;
+	private UserRepository userRepository;
 
 	@Autowired
-	private TagService tagService;
+	private ITagService tagService;
 
 	@Override
 	@Transactional
@@ -31,9 +32,9 @@ public class TodoTreeRepresentationService implements ITodoTreeRepresentationSer
 
 		updatePartOfRepresentation(representation, plainRepresentation);
 
-		representation.setUser(userCrud.findOne(userId));
+		representation.setUser(userRepository.findOne(userId));
 
-		crud.save(representation);
+		repository.save(representation);
 
 		return Converter.toPlain(representation);
 	}
@@ -41,7 +42,7 @@ public class TodoTreeRepresentationService implements ITodoTreeRepresentationSer
 	@Override
 	@Transactional(readOnly = true)
 	public List<PlainTodoTreeRepresentation> getList(Long userId) {
-		return crud.findByUserId(userId).stream().map(Converter::toPlain).collect(Collectors.toList());
+		return repository.findByUserId(userId).stream().map(Converter::toPlain).collect(Collectors.toList());
 	}
 
 	private void updatePartOfRepresentation(TodoTreeRepresentation target, PlainTodoTreeRepresentation source) {
@@ -57,7 +58,7 @@ public class TodoTreeRepresentationService implements ITodoTreeRepresentationSer
 	@Override
 	@Transactional
 	public PlainTodoTreeRepresentation update(Long userId, PlainTodoTreeRepresentation plainRepresentation) {
-		TodoTreeRepresentation representation = crud.findOne(plainRepresentation.getId());
+		TodoTreeRepresentation representation = repository.findOne(plainRepresentation.getId());
 
 		updatePartOfRepresentation(representation, plainRepresentation);
 
@@ -67,9 +68,9 @@ public class TodoTreeRepresentationService implements ITodoTreeRepresentationSer
 	@Override
 	@Transactional
 	public PlainTodoTreeRepresentation remove(Long userId, Long id) {
-		PlainTodoTreeRepresentation result = Converter.toPlain(crud.findOne(id));
+		PlainTodoTreeRepresentation result = Converter.toPlain(repository.findOne(id));
 
-		crud.delete(id);
+		repository.delete(id);
 
 		return result;
 	}

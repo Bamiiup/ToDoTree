@@ -9,26 +9,27 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import aaandrey.todotree.domain.Tag;
-import aaandrey.todotree.repositories.TagCrud;
+import aaandrey.todotree.repositories.TagRepository;
 import aaandrey.todotree.service.domain.PlainTag;
 
 @Component
-public class TagService {
+public class TagService implements ITagService {
 
 	@Autowired
-	private TagCrud tagCrud;
+	private TagRepository repository;
 
+	@Override
 	@Transactional
 	public List<Tag> findOrCreate(Collection<PlainTag> plainTags) {
 		return plainTags.stream().map(plainTag -> {
 
-			List<Tag> foundTags = tagCrud.findByName(plainTag.getName());
+			List<Tag> foundTags = repository.findByName(plainTag.getName());
 
 			if (foundTags.size() == 1) {
 				return foundTags.get(0);
 			} else {
 				Tag tag = new Tag(plainTag.getName());
-				tagCrud.save(tag);
+				repository.save(tag);
 				return tag;
 			}
 		}).collect(Collectors.toList());
