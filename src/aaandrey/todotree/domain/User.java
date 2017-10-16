@@ -1,5 +1,6 @@
 package aaandrey.todotree.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,9 +25,12 @@ public class User {
 
 	@Column(name = "PASSWORD", nullable = false)
 	private String password;
-	
-	@OneToMany(mappedBy = "user")
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Todo> todoList = new HashSet<>();
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<TodoTreeRepresentation> todoTreeRepresentations = new HashSet<>();
 
 	public String getLogin() {
 		return login;
@@ -55,28 +59,46 @@ public class User {
 	public Set<Todo> getTodoList() {
 		return todoList;
 	}
-	
+
 	public void addTodo(Todo todo) {
 		addTodo(todo, false);
 	}
-	
+
 	public void addTodo(Todo todo, boolean otherSideWasAffected) {
 		getTodoList().add(todo);
-		if(otherSideWasAffected) {
+		if (otherSideWasAffected) {
 			return;
 		}
 		todo.setUser(this, true);
 	}
-	
+
 	public void removeTodo(Todo todo) {
 		removeTodo(todo, false);
 	}
-	
+
 	public void removeTodo(Todo todo, boolean otherSideWasAffected) {
 		this.getTodoList().remove(todo);
-		if(otherSideWasAffected) {
+		if (otherSideWasAffected) {
 			return;
 		}
 		todo.removeUser(true);
+	}
+
+	public Set<TodoTreeRepresentation> getTodoTreeRepresentations() {
+		return this.todoTreeRepresentations;
+	}
+
+	public void addTodoTreeRepresentation(TodoTreeRepresentation representation) {
+		addTodoTreeRepresentation(representation, false);
+	}
+
+	void addTodoTreeRepresentation(TodoTreeRepresentation representation, boolean otherSideWasAffected) {
+		this.getTodoTreeRepresentations().add(representation);
+
+		if (otherSideWasAffected) {
+			return;
+		}
+
+		representation.setUser(this, true);
 	}
 }

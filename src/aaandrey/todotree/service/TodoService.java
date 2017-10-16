@@ -1,6 +1,5 @@
 package aaandrey.todotree.service;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,13 +7,12 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import aaandrey.todotree.domain.Tag;
 import aaandrey.todotree.domain.Todo;
 import aaandrey.todotree.domain.User;
-import aaandrey.todotree.service.domain.PlainTag;
 import aaandrey.todotree.service.domain.PlainTodo;
 import aaandrey.todotree.service.utils.Converter;
 
@@ -22,6 +20,9 @@ import aaandrey.todotree.service.utils.Converter;
 public class TodoService implements ITodoService {
 	@PersistenceContext
 	private EntityManager entityManager;
+
+	@Autowired
+	private TagService tagService;
 
 	// TODO: implement this
 	private void validateForRemove(EntityManager entityManager, Long userId, Long todoId) {
@@ -71,7 +72,7 @@ public class TodoService implements ITodoService {
 		todo.setPriority(plainTodo.getPriority());
 		todo.setStartDate((Date) plainTodo.getStartDate().clone());
 		todo.setWeight(plainTodo.getWeight());
-		todo.setTags(findOrCreate(entityManager, plainTodo.getTags()));
+		todo.setTags(tagService.findOrCreate(plainTodo.getTags()));
 		todo.setChildren(
 				plainTodo.getChildIds().stream().map(id -> entityManager.find(Todo.class, id)).collect(Collectors.toSet()));
 		setParent(todo, plainTodo.getParentId());
@@ -156,24 +157,8 @@ public class TodoService implements ITodoService {
 
 		entityManager.persist(todo);
 
-		findOrCreate(entityManager, plainTodo.getTags()).forEach(todo::addTag);
+		tagService.findOrCreate(plainTodo.getTags()).forEach(todo::addTag);
 
 		return todo;
-	}
-
-	private List<Tag> findOrCreate(EntityManager entityManager, Collection<PlainTag> plainTags) {
-		return plainTags.stream().map(plainTag -> {
-
-			List<Tag> foundTags = entityManager.createQuery("SELECT tag FROM Tag tag WHERE tag.name = :name", Tag.class)
-					.setParameter("name", plainTag.getName()).getResultList();
-
-			if (foundTags.size() == 1) {
-				return foundTags.get(0);
-			} else {
-				Tag tag = new Tag(plainTag.getName());
-				entityManager.persist(tag);
-				return tag;
-			}
-		}).collect(Collectors.toList());
 	}
 }

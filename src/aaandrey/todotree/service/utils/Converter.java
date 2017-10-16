@@ -4,8 +4,10 @@ import java.util.stream.Collectors;
 
 import aaandrey.todotree.domain.Tag;
 import aaandrey.todotree.domain.Todo;
+import aaandrey.todotree.domain.TodoTreeRepresentation;
 import aaandrey.todotree.service.domain.PlainTag;
 import aaandrey.todotree.service.domain.PlainTodo;
+import aaandrey.todotree.service.domain.PlainTodoTreeRepresentation;
 
 public class Converter {
 	public static PlainTodo toPlainTodo(Todo todo) {
@@ -43,5 +45,21 @@ public class Converter {
 		plainTag.setTodoIds(tag.getTodoList().stream().map(todo -> todo.getId()).collect(Collectors.toSet()));
 
 		return plainTag;
+	}
+
+	public static PlainTodoTreeRepresentation toPlain(TodoTreeRepresentation representation) {
+		PlainTodoTreeRepresentation result = new PlainTodoTreeRepresentation();
+
+		result.setBottomPriority(representation.getBottomPriority());
+		result.setBottomWeight(representation.getBottomWeight());
+		result.setDayAmountAfterToday(representation.getDayAmountAfterToday());
+		result.setId(representation.getId());
+		result.setIsImportant(representation.getIsImportant());
+		result.setTags(representation.getTags().stream().map(Converter::toPlainTag).collect(Collectors.toSet()));
+		result.setTopPriority(representation.getTopPriority());
+		result.setTopWeight(representation.getTopWeight());
+		result.setUserId(representation.getUser().getId());
+
+		return result;
 	}
 }
