@@ -4,6 +4,11 @@ import {expandTypes} from './../store/ui/todoTree/TodoTreeReducer';
 
 export default class Todo extends React.Component {
 
+  onClickComplete = () => {
+    let id = this.props.id;
+    this.props.onClickComplete(id);
+  }
+
   onClickMinus = () => {
     let id = this.props.id;
     this.props.onClickExpand(id, expandTypes.isNotExpanded);
@@ -58,6 +63,19 @@ export default class Todo extends React.Component {
     }
   }
 
+  getNameStyle() {
+    if(this.props.isCompleted) {
+      return {
+        cursor: "pointer",
+        textDecoration: "line-through"
+      };
+    } else {
+      return {
+        cursor: "pointer"
+      };
+    }
+  }
+
   render() {
     const {name, isDetailed, comment, expandType} = this.props;
     return(
@@ -67,7 +85,7 @@ export default class Todo extends React.Component {
             {this.getExpandSpan(expandType)}
           </div>
           <div style={{flexGrow: 1}}>
-            <span className="font-weight-bold" style={{cursor: "pointer"}}
+            <span className="font-weight-bold" style={this.getNameStyle()}
               onClick={this.onClickTodo}>
               {name}
             </span>
@@ -83,10 +101,10 @@ export default class Todo extends React.Component {
 
               </button>
               <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <Link className="dropdown-item" to="/">Complete</Link>
+                <span className="dropdown-item" onClick={this.onClickComplete} style={{cursor: "pointer"}}>Complete</span>
                 <Link className="dropdown-item" to={"/todoEditor/new/" + this.props.id}>New</Link>
                 <Link className="dropdown-item" to={"/todoEditor/edit/" + this.props.id}>Edit</Link>
-                <span className="dropdown-item" onClick={this.onClickRemove}>Remove</span>
+                <span className="dropdown-item" onClick={this.onClickRemove} style={{cursor: "pointer"}}>Remove</span>
               </div>
             </div>
           </div>

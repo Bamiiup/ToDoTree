@@ -44,8 +44,6 @@ public class TodoService implements ITodoService {
 
 		Todo todo = repository.findOne(todoId);
 		PlainTodo result = Converter.toPlain(todo);
-		todo.removeAllTags();
-		todo.removeUser();
 		repository.delete(todo);
 
 		return result;

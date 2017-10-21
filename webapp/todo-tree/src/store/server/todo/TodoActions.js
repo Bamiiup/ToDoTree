@@ -41,3 +41,15 @@ const removeTodo = (id) => {
 };
 
 export {removeTodo, REMOVE_TODO};
+
+const UPDATE_IS_COMPLETED  = "UPDATE_IS_COMPLETED";
+
+const updateIsCompleted = (id, isCompleted) => {
+  return {
+    type: UPDATE_IS_COMPLETED,
+    id,
+    isCompleted
+  }
+};
+
+export {updateIsCompleted, UPDATE_IS_COMPLETED};

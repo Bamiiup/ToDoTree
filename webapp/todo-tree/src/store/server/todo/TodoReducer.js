@@ -1,4 +1,4 @@
-import {SET_TODO_BY_ID, ADD_TODO, UPDATE_TODO, REMOVE_TODO} from './TodoActions';
+import {SET_TODO_BY_ID, ADD_TODO, UPDATE_TODO, REMOVE_TODO, UPDATE_IS_COMPLETED} from './TodoActions';
 
 const todoByIdStates = {
   empty: "empty",
@@ -89,6 +89,32 @@ const recursivelyRemoveTodo = (todoById, todo) => {
   }
 }
 
+const updateIsCompleted = (state, action) => {
+  let todoById = {...state.todoById};
+  let todo = todoById[action.id];
+  let isCompleted = action.isCompleted;
+
+  recursivelyUpdateIsCompleted(todoById, todo, isCompleted);
+
+  let result = {
+    state: state.state,
+    todoById
+  };
+
+  return result;
+};
+
+const recursivelyUpdateIsCompleted = (todoById, todo, isCompleted) => {
+  if(todo.childIds.length !== 0) {
+    todo.childIds.forEach(childId => recursivelyUpdateIsCompleted(todoById, todoById[childId], isCompleted));
+  }
+
+  todoById[todo.id] = {
+    ...todo,
+    isCompleted
+  };
+}
+
 const todoReducer = (state = startState, action) => {
   if(action.type === SET_TODO_BY_ID) {
     return {
@@ -107,6 +133,10 @@ const todoReducer = (state = startState, action) => {
 
   if(action.type === REMOVE_TODO) {
     return removeTodo(state, action);
+  }
+
+  if(action.type === UPDATE_IS_COMPLETED) {
+    return updateIsCompleted(state, action);
   }
 
   return state;

@@ -42,6 +42,14 @@ public class TodoTreeRepresentation {
 	}
 
 	@Authenticational
+	@RequestMapping(path = "/todoTreeRepresentation/{id}", method = RequestMethod.GET)
+	public ResponseEntity<PlainTodoTreeRepresentation> getList(HttpServletRequest request, @PathVariable Long id) {
+
+		PlainTodoTreeRepresentation result = service.get(userId, id);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@Authenticational
 	@RequestMapping(path = "/todoTreeRepresentation", method = RequestMethod.PUT)
 	public ResponseEntity<PlainTodoTreeRepresentation> update(HttpServletRequest request,
 			@RequestBody PlainTodoTreeRepresentation representation) {

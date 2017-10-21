@@ -21,6 +21,7 @@ export default class TodoTree extends React.Component {
           onClickTodo={this.props.onClickTodo}
           onClickImportantFlag={this.props.onClickImportantFlag}
           onClickRemove={this.props.onClickRemove}
+          onClickComplete={this.props.onClickComplete}
           />
       </div>
     );
@@ -35,7 +36,21 @@ export default class TodoTree extends React.Component {
   render() {
     return(
       <div className="container" style={{marginTop: "20px"}}>
-        <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-end",alignItems: "center"}}>
+        <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between",alignItems: "center"}}>
+
+          <div className="row">
+            <label className="col-6 col-form-label">Representation:</label>
+            <div className="col-6">
+
+              <select className="form-control form-control-sm">
+                <option value="All">All</option>
+                <option value="Sort">Sport</option>
+                <option value="Univesity">Univesity</option>
+              </select>
+
+            </div>
+          </div>
+
           <button type="button" className="btn btn-light btn-sm" onClick={this.props.onClickNew}>
             <span className="oi oi-plus" style={{color: "#88a586", fontSize: "10pt"}}></span> New
           </button>

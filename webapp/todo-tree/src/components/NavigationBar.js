@@ -11,6 +11,11 @@ const createLinks = (props) =>  {
         <li className="nav-item active">
           <Link className="nav-link" to="/tree">Tree</Link>
         </li>
+        <li className="nav-item active">
+          <Link className="nav-link" to="/">
+            Representations
+          </Link>
+        </li>
         <li className="nav-item">
           <Link className="nav-link" to="/"
             onClick={props.onClickLogOut}>

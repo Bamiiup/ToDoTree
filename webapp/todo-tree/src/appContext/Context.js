@@ -1,5 +1,6 @@
 import UserService from "./../services/UserService";
 import TodoService from "./../services/TodoService";
+import RepresentationService from "./../services/RepresentationService";
 import { createStore } from 'redux';
 import mainReducer from './../store/MainReducer';
 
@@ -10,5 +11,6 @@ const startUrl = "http://localhost:8080/ToDoTree/";
 
 const userService = new UserService(startUrl);
 const todoService = new TodoService(startUrl);
+const representationService = new RepresentationService(startUrl);
 
-export {userService, todoService, store};
+export {userService, todoService, representationService, store};

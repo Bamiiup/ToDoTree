@@ -18,6 +18,15 @@ export default class Registration extends React.Component {
             </div>
 
             <div className="form-group row">
+              <label className="col-3 col-form-label">Email</label>
+              <div className="col-9">
+
+                <input className="form-control" type="email" onChange={this.props.onChangePassword} value={this.props.password}/>
+
+              </div>
+            </div>
+
+            <div className="form-group row">
               <label className="col-3 col-form-label">Password</label>
               <div className="col-9">
 

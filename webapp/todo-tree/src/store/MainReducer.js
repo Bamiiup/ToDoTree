@@ -1,6 +1,7 @@
 import userReducer from './server/user/UserReducer';
 import todoReducer from './server/todo/TodoReducer';
 import todoTreeReducer from './ui/todoTree/TodoTreeReducer';
+import representationEditorReducer from './ui/representationEditor/Reducer';
 
 let startState = {
   server: {
@@ -18,7 +19,8 @@ const mainReducer = (state = startState, action) => {
       todoList: todoReducer(state.server.todoList, action)
     },
     ui: {
-      todoTree: todoTreeReducer(state.ui.todoTree, action, state.server.todoList)
+      todoTree: todoTreeReducer(state.ui.todoTree, action, state.server.todoList),
+      representationEditor: representationEditorReducer(state.ui.representationEditor, action)
     }
   };
 };

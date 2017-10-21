@@ -3,7 +3,7 @@ import TodoTree from './../components/TodoTree';
 import {connect} from 'react-redux';
 import {todoByIdStates} from './../store/server/todo/TodoReducer';
 import {todoService} from './../appContext/Context';
-import {setTodoById, updateTodo, removeTodo} from './../store/server/todo/TodoActions';
+import {setTodoById, updateTodo, removeTodo, updateIsCompleted} from './../store/server/todo/TodoActions';
 import {updateUiTodo} from './../store/ui/todoTree/UiTodoActions';
 
 /*
@@ -21,7 +21,11 @@ class TodoTreeContainer extends React.Component {
     todoService.getList().then((data) => data.json()).then(todoList => {
       let todoById = {};
       todoList.forEach(todo => {
-        todoById[todo.id] = todo;
+        todoById[todo.id] = {
+          ...todo,
+          //TODO: Remove it when we add this field to todo at the server side
+          isCompleted: false
+        };
       });
 
       this.props.dispatch(setTodoById(todoById));
@@ -52,6 +56,7 @@ class TodoTreeContainer extends React.Component {
       ...oldTodo,
       important: !oldTodo.important
     };
+
     todoService.update(newTodo).then(data => data.json()).then((todo) => {
       this.props.dispatch(updateTodo(todo));
     });
@@ -63,6 +68,18 @@ class TodoTreeContainer extends React.Component {
     });
   }
 
+  onClickComplete = (id) => {
+    let todo = this.props.todoById[id];
+    
+    this.props.dispatch(updateIsCompleted(id, !todo.isCompleted));
+
+    //TODO: make updateIsCompleted method for server side
+
+    /*todoService.update(newTodo).then(data => data.json()).then((todo) => {
+
+    });*/
+  }
+
   render() {
     return(
       <TodoTree
@@ -72,7 +89,8 @@ class TodoTreeContainer extends React.Component {
         onClickExpand={this.onClickExpand}
         onClickTodo={this.onClickTodo}
         onClickImportantFlag={this.onClickImportantFlag}
-        onClickRemove={this.onClickRemove}/>
+        onClickRemove={this.onClickRemove}
+        onClickComplete={this.onClickComplete}/>
     );
   }
 }

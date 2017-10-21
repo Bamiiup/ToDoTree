@@ -75,4 +75,10 @@ public class TodoTreeRepresentationService implements ITodoTreeRepresentationSer
 		return result;
 	}
 
+	@Override
+	@Transactional
+	public PlainTodoTreeRepresentation get(Long userId, Long id) {
+		return Converter.toPlain(repository.findOne(id));
+	}
+
 }

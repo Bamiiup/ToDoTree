@@ -12,4 +12,6 @@ public interface ITodoTreeRepresentationService {
 	PlainTodoTreeRepresentation update(Long userId, PlainTodoTreeRepresentation todoTreeRepresentation);
 
 	PlainTodoTreeRepresentation remove(Long userId, Long id);
+
+	PlainTodoTreeRepresentation get(Long userId, Long id);
 }
