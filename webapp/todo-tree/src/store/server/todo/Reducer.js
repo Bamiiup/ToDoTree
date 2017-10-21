@@ -1,4 +1,4 @@
-import {SET_TODO_BY_ID, ADD_TODO, UPDATE_TODO, REMOVE_TODO, UPDATE_IS_COMPLETED} from './TodoActions';
+import {SET, ADD, UPDATE, REMOVE, UPDATE_IS_COMPLETED} from './Actions';
 
 const todoByIdStates = {
   empty: "empty",
@@ -12,7 +12,7 @@ const startState = {
   todoById: {}
 };
 
-const addTodo = (state, action) => {
+const add = (state, action) => {
   let todo = action.todo;
   let todoById = state.todoById;
   let parentTodo = todoById[todo.parentId];
@@ -42,7 +42,7 @@ const addTodo = (state, action) => {
   }
 };
 
-const updateTodo = (state, action) => {
+const update = (state, action) => {
   let todoById = state.todoById;
   let newTodo = action.todo;
   let oldTodo = todoById[newTodo.id];
@@ -59,7 +59,7 @@ const updateTodo = (state, action) => {
   };
 };
 
-const removeTodo = (state, action) => {
+const remove = (state, action) => {
   let todoById = {...state.todoById};
   let todo = todoById[action.id];
 
@@ -116,23 +116,23 @@ const recursivelyUpdateIsCompleted = (todoById, todo, isCompleted) => {
 }
 
 const todoReducer = (state = startState, action) => {
-  if(action.type === SET_TODO_BY_ID) {
+  if(action.type === SET) {
     return {
       state: todoByIdStates.loaded,
       todoById: action.todoById
     };
   }
 
-  if(action.type === ADD_TODO) {
-    return addTodo(state, action);
+  if(action.type === ADD) {
+    return add(state, action);
   }
 
-  if(action.type === UPDATE_TODO) {
-    return updateTodo(state, action);
+  if(action.type === UPDATE) {
+    return update(state, action);
   }
 
-  if(action.type === REMOVE_TODO) {
-    return removeTodo(state, action);
+  if(action.type === REMOVE) {
+    return remove(state, action);
   }
 
   if(action.type === UPDATE_IS_COMPLETED) {

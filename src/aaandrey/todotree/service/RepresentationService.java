@@ -7,17 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import aaandrey.todotree.domain.TodoTreeRepresentation;
-import aaandrey.todotree.repositories.TodoTreeRepresentationRepository;
+import aaandrey.todotree.domain.Representation;
+import aaandrey.todotree.repositories.RepresentationRepository;
 import aaandrey.todotree.repositories.UserRepository;
-import aaandrey.todotree.service.domain.PlainTodoTreeRepresentation;
+import aaandrey.todotree.service.domain.PlainRepresentation;
 import aaandrey.todotree.service.utils.Converter;
 
 //TODO: implement validation and authorization
 @Component
-public class TodoTreeRepresentationService implements ITodoTreeRepresentationService {
+public class RepresentationService implements IRepresentationService {
 	@Autowired
-	private TodoTreeRepresentationRepository repository;
+	private RepresentationRepository repository;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -27,8 +27,8 @@ public class TodoTreeRepresentationService implements ITodoTreeRepresentationSer
 
 	@Override
 	@Transactional
-	public PlainTodoTreeRepresentation create(Long userId, PlainTodoTreeRepresentation plainRepresentation) {
-		TodoTreeRepresentation representation = new TodoTreeRepresentation();
+	public PlainRepresentation create(Long userId, PlainRepresentation plainRepresentation) {
+		Representation representation = new Representation();
 
 		updatePartOfRepresentation(representation, plainRepresentation);
 
@@ -41,11 +41,11 @@ public class TodoTreeRepresentationService implements ITodoTreeRepresentationSer
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<PlainTodoTreeRepresentation> getList(Long userId) {
+	public List<PlainRepresentation> getList(Long userId) {
 		return repository.findByUserId(userId).stream().map(Converter::toPlain).collect(Collectors.toList());
 	}
 
-	private void updatePartOfRepresentation(TodoTreeRepresentation target, PlainTodoTreeRepresentation source) {
+	private void updatePartOfRepresentation(Representation target, PlainRepresentation source) {
 		target.setBottomPriority(source.getBottomPriority());
 		target.setBottomWeight(source.getBottomWeight());
 		target.setDayAmountAfterToday(source.getDayAmountAfterToday());
@@ -57,8 +57,8 @@ public class TodoTreeRepresentationService implements ITodoTreeRepresentationSer
 
 	@Override
 	@Transactional
-	public PlainTodoTreeRepresentation update(Long userId, PlainTodoTreeRepresentation plainRepresentation) {
-		TodoTreeRepresentation representation = repository.findOne(plainRepresentation.getId());
+	public PlainRepresentation update(Long userId, PlainRepresentation plainRepresentation) {
+		Representation representation = repository.findOne(plainRepresentation.getId());
 
 		updatePartOfRepresentation(representation, plainRepresentation);
 
@@ -67,8 +67,8 @@ public class TodoTreeRepresentationService implements ITodoTreeRepresentationSer
 
 	@Override
 	@Transactional
-	public PlainTodoTreeRepresentation remove(Long userId, Long id) {
-		PlainTodoTreeRepresentation result = Converter.toPlain(repository.findOne(id));
+	public PlainRepresentation remove(Long userId, Long id) {
+		PlainRepresentation result = Converter.toPlain(repository.findOne(id));
 
 		repository.delete(id);
 
@@ -77,7 +77,7 @@ public class TodoTreeRepresentationService implements ITodoTreeRepresentationSer
 
 	@Override
 	@Transactional
-	public PlainTodoTreeRepresentation get(Long userId, Long id) {
+	public PlainRepresentation get(Long userId, Long id) {
 		return Converter.toPlain(repository.findOne(id));
 	}
 

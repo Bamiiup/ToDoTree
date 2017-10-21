@@ -5,7 +5,7 @@ import java.util.Set;
 
 import aaandrey.todotree.domain.PriorityType;
 
-public class PlainTodoTreeRepresentation {
+public class PlainRepresentation {
 	private Long id;
 	private Integer dayAmountAfterToday;
 	private PriorityType bottomPriority;

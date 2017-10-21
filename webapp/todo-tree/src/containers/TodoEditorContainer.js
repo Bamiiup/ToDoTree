@@ -2,7 +2,7 @@ import React from 'react';
 import TodoEditor from './../components/TodoEditor';
 import {todoService} from "./../appContext/Context";
 import DateUtils from './../utils/DateUtils';
-import {addTodo, updateTodo} from './../store/server/todo/TodoActions';
+import {add, update} from './../store/server/todo/Actions';
 import {connect} from 'react-redux';
 
 /*
@@ -33,11 +33,12 @@ class TodoEditorContainer extends React.Component {
       todoService.get(this.props.id).then((data) => {
         return data.json();
       }).then(todo => {
-        let result = Object.assign({}, todo, {
+        let result = {
+          ...todo,
           startDate: DateUtils.formatToHtmlDateInput(new Date(todo.startDate)),
           endDate: DateUtils.formatToHtmlDateInput(new Date(todo.endDate)),
           tags: todo.tags.map(tag => (tag.name)).join(",")
-        });
+        };
 
         this.setState(result);
       });
@@ -119,14 +120,14 @@ class TodoEditorContainer extends React.Component {
     let todo = this._getFormattedTodoToService();
     if(this.props.mode === "new") {
       todoService.create(todo).then(data => data.json()).then((todo) => {
-        this.props.dispatch(addTodo(todo));
+        this.props.dispatch(add(todo));
         this.props.history.goBack();
       });
     }
 
     if(this.props.mode === "edit") {
       todoService.update(todo).then(data => data.json()).then((todo) => {
-        this.props.dispatch(updateTodo(todo));
+        this.props.dispatch(update(todo));
         this.props.history.goBack();
       });
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {expandTypes} from './../store/ui/todoTree/TodoTreeReducer';
+import {expandTypes} from './../store/ui/todoTree/Reducer';
 
 export default class Todo extends React.Component {
 

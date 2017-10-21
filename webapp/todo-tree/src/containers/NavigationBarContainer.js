@@ -1,7 +1,7 @@
 import React from 'react';
 import NavigationBar from './../components/NavigationBar';
 import {connect} from 'react-redux';
-import {setIsAuthenticated} from './../store/server/user/UserActions';
+import {setIsAuthenticated} from './../store/server/user/Actions';
 
 class NavigationBarContainer extends React.Component {
 

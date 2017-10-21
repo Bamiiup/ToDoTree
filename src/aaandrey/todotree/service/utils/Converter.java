@@ -4,10 +4,10 @@ import java.util.stream.Collectors;
 
 import aaandrey.todotree.domain.Tag;
 import aaandrey.todotree.domain.Todo;
-import aaandrey.todotree.domain.TodoTreeRepresentation;
+import aaandrey.todotree.domain.Representation;
 import aaandrey.todotree.service.domain.PlainTag;
 import aaandrey.todotree.service.domain.PlainTodo;
-import aaandrey.todotree.service.domain.PlainTodoTreeRepresentation;
+import aaandrey.todotree.service.domain.PlainRepresentation;
 
 public class Converter {
 	public static PlainTodo toPlain(Todo todo) {
@@ -47,8 +47,8 @@ public class Converter {
 		return plainTag;
 	}
 
-	public static PlainTodoTreeRepresentation toPlain(TodoTreeRepresentation representation) {
-		PlainTodoTreeRepresentation result = new PlainTodoTreeRepresentation();
+	public static PlainRepresentation toPlain(Representation representation) {
+		PlainRepresentation result = new PlainRepresentation();
 
 		result.setBottomPriority(representation.getBottomPriority());
 		result.setBottomWeight(representation.getBottomWeight());

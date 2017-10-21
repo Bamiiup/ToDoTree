@@ -2,7 +2,7 @@ import React from 'react'
 import {userService} from './../appContext/Context'
 import Registration from './../components/Registration';
 import {connect} from 'react-redux';
-import {setIsAuthenticated} from './../store/server/user/UserActions';
+import {setIsAuthenticated} from './../store/server/user/Actions';
 
 /*
   TODO: 1. move state to store

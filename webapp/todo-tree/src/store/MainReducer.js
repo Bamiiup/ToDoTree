@@ -1,6 +1,6 @@
-import userReducer from './server/user/UserReducer';
-import todoReducer from './server/todo/TodoReducer';
-import todoTreeReducer from './ui/todoTree/TodoTreeReducer';
+import userReducer from './server/user/Reducer';
+import todoReducer from './server/todo/Reducer';
+import todoTreeReducer from './ui/todoTree/Reducer';
 import representationEditorReducer from './ui/representationEditor/Reducer';
 
 let startState = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Todo from './Todo';
-import {expandTypes} from './../store/ui/todoTree/TodoTreeReducer';
+import {expandTypes} from './../store/ui/todoTree/Reducer';
 
 export default class TodoTree extends React.Component {
   createTree(todoById) {

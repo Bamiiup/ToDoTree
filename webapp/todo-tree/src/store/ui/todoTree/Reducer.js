@@ -1,5 +1,5 @@
-import {SET_TODO_BY_ID, ADD_TODO, REMOVE_TODO} from './../../server/todo/TodoActions';
-import {UPDATE_UI_TODO} from './UiTodoActions';
+import {SET, ADD, REMOVE} from './../../server/todo/Actions';
+import {UPDATE} from './Actions';
 
 const expandTypes = {
   isExpanded: "isExpanded",
@@ -19,7 +19,7 @@ const defineTodoExpandType = (todo) => {
   }
 }
 
-const setTodoById = (action) => {
+const set = (action) => {
   let uiTodoById = {};
 
   let todoById = action.todoById;
@@ -36,7 +36,7 @@ const setTodoById = (action) => {
   };
 };
 
-const addTodo = (state, action) => {
+const add = (state, action) => {
   let todo = action.todo;
   let uiTodoById = state.uiTodoById;
   let parentTodo = uiTodoById[todo.parentId];
@@ -72,7 +72,7 @@ const addTodo = (state, action) => {
   return result;
 };
 
-const updateUiTodo = (state, action) => {
+const update = (state, action) => {
   let newUiTodo = action.uiTodo;
   let oldUiTodo = state.uiTodoById[newUiTodo.id];
   let result = {
@@ -89,7 +89,7 @@ const updateUiTodo = (state, action) => {
   return result;
 };
 
-const removeTodo = (state, action, serverTodoListState) => {
+const remove = (state, action, serverTodoListState) => {
   let uiTodoById = {...state.uiTodoById};
   const todoById = serverTodoListState.todoById;
   const todo = todoById[action.id];
@@ -109,7 +109,7 @@ const recursivelyRemoveTodo = (uiTodoById, todoById, todo) => {
   }
 
   delete uiTodoById[todo.id];
-  
+
   const parentUiTodo = uiTodoById[todo.parentId];
   if(parentUiTodo) {
     uiTodoById[todo.parentId] = {
@@ -120,20 +120,20 @@ const recursivelyRemoveTodo = (uiTodoById, todoById, todo) => {
 }
 
 const todoTreeReducer = (state = startState, action, serverTodoListState) => {
-  if(action.type === SET_TODO_BY_ID) {
-    return setTodoById(action);
+  if(action.type === SET) {
+    return set(action);
   }
 
-  if(action.type === ADD_TODO) {
-    return addTodo(state, action);
+  if(action.type === ADD) {
+    return add(state, action);
   }
 
-  if(action.type === UPDATE_UI_TODO) {
-    return updateUiTodo(state, action);
+  if(action.type === UPDATE) {
+    return update(state, action);
   }
 
-  if(action.type === REMOVE_TODO) {
-    return removeTodo(state, action, serverTodoListState);
+  if(action.type === REMOVE) {
+    return remove(state, action, serverTodoListState);
   }
 
   return state;

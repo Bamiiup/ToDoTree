@@ -30,7 +30,7 @@ public class User {
 	private Set<Todo> todoList = new HashSet<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Set<TodoTreeRepresentation> todoTreeRepresentations = new HashSet<>();
+	private Set<Representation> representations = new HashSet<>();
 
 	public String getLogin() {
 		return login;
@@ -84,16 +84,16 @@ public class User {
 		todo.removeUser(true);
 	}
 
-	public Set<TodoTreeRepresentation> getTodoTreeRepresentations() {
-		return this.todoTreeRepresentations;
+	public Set<Representation> getRepresentations() {
+		return this.representations;
 	}
 
-	public void addTodoTreeRepresentation(TodoTreeRepresentation representation) {
-		addTodoTreeRepresentation(representation, false);
+	public void addRepresentation(Representation representation) {
+		addRepresentation(representation, false);
 	}
 
-	void addTodoTreeRepresentation(TodoTreeRepresentation representation, boolean otherSideWasAffected) {
-		this.getTodoTreeRepresentations().add(representation);
+	void addRepresentation(Representation representation, boolean otherSideWasAffected) {
+		this.getRepresentations().add(representation);
 
 		if (otherSideWasAffected) {
 			return;

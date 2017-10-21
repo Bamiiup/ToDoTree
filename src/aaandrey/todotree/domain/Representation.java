@@ -16,8 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 
 @Entity
-@Table(name = "TODO_TREE_REPRESENTATION")
-public class TodoTreeRepresentation {
+@Table(name = "REPRESENTATION")
+public class Representation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
@@ -27,7 +27,7 @@ public class TodoTreeRepresentation {
 	private Integer dayAmountAfterToday;
 
 	@ManyToMany
-	@JoinTable(name = "TODO_TREE_REPRESENTATION__TAG", joinColumns = @JoinColumn(name = "TODO_TREE_REPRESENTATION_ID"), inverseJoinColumns = @JoinColumn(name = "TAG_ID"))
+	@JoinTable(name = "REPRESENTATION_TAG", joinColumns = @JoinColumn(name = "REPRESENTATION_ID"), inverseJoinColumns = @JoinColumn(name = "TAG_ID"))
 	private Set<Tag> tags = new HashSet<>();
 
 	@Column(name = "BOTTOM_PRIORITY")
@@ -128,6 +128,6 @@ public class TodoTreeRepresentation {
 			return;
 		}
 
-		user.addTodoTreeRepresentation(this, true);
+		user.addRepresentation(this, true);
 	}
 }

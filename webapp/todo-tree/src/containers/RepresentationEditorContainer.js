@@ -37,7 +37,7 @@ class RepresentationEditorContainer extends React.Component {
       return null;
     }
 
-    return parseInt(line);
+    return parseInt(line, 10);
   }
 
   onChangeEndAfterDays = (event) => {

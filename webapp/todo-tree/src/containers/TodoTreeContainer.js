@@ -1,10 +1,10 @@
 import React from 'react';
 import TodoTree from './../components/TodoTree';
 import {connect} from 'react-redux';
-import {todoByIdStates} from './../store/server/todo/TodoReducer';
+import {todoByIdStates} from './../store/server/todo/Reducer';
 import {todoService} from './../appContext/Context';
-import {setTodoById, updateTodo, removeTodo, updateIsCompleted} from './../store/server/todo/TodoActions';
-import {updateUiTodo} from './../store/ui/todoTree/UiTodoActions';
+import {set, update as updateTodo, remove, updateIsCompleted} from './../store/server/todo/Actions';
+import {update as updateUiTodo} from './../store/ui/todoTree/Actions';
 
 /*
   TODO: 1. finish implementation
@@ -28,7 +28,7 @@ class TodoTreeContainer extends React.Component {
         };
       });
 
-      this.props.dispatch(setTodoById(todoById));
+      this.props.dispatch(set(todoById));
     });
   }
 
@@ -64,13 +64,13 @@ class TodoTreeContainer extends React.Component {
 
   onClickRemove = (id) => {
     todoService.remove(id).then(() => {
-      this.props.dispatch(removeTodo(id));
+      this.props.dispatch(remove(id));
     });
   }
 
   onClickComplete = (id) => {
     let todo = this.props.todoById[id];
-    
+
     this.props.dispatch(updateIsCompleted(id, !todo.isCompleted));
 
     //TODO: make updateIsCompleted method for server side
@@ -100,10 +100,11 @@ const mapStateToProps = (state) => {
 
   Object.values(state.server.todoList.todoById).forEach(todo => {
     let uiTodo = state.ui.todoTree.uiTodoById[todo.id];
-    todoById[todo.id] = Object.assign({}, todo, {
+    todoById[todo.id] = {
+      ...todo,
       expandType: uiTodo.expandType,
       isDetailed: uiTodo.isDetailed
-    });
+    };
   });
 
   return {

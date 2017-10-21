@@ -4,7 +4,7 @@ export default class RepresentationService {
   }
 
   create(representation) {
-    return fetch(this.startUrl + "todoTreeRepresentation", {
+    return fetch(this.startUrl + "representation", {
       method: "post",
       headers: new Headers({
         "Content-type": "application/json;chartSet=UTF-8",
@@ -15,7 +15,7 @@ export default class RepresentationService {
   }
 
   get(id) {
-    return fetch(this.startUrl + "todoTreeRepresentation/" + id, {
+    return fetch(this.startUrl + "representation/" + id, {
       method: "get",
       headers: new Headers({
         "Content-type": "application/json;chartSet=UTF-8",
@@ -25,7 +25,7 @@ export default class RepresentationService {
   }
 
   update(representation) {
-    return fetch(this.startUrl + "todoTreeRepresentation", {
+    return fetch(this.startUrl + "representation", {
       method: "put",
       headers: new Headers({
         "Content-type": "application/json;chartSet=UTF-8",

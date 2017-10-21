@@ -10,7 +10,7 @@ import RepresentationEditorContainer from './containers/RepresentationEditorCont
 import {HashRouter, Route} from 'react-router-dom'
 import {Provider} from 'react-redux';
 import {store} from './appContext/Context';
-import {setIsAuthenticated} from './store/server/user/UserActions';
+import {setIsAuthenticated} from './store/server/user/Actions';
 
 class App extends React.Component {
 
