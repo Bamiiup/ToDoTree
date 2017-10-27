@@ -16,8 +16,7 @@
 
 	<mvc:annotation-driven />
 
-	<mvc:resources location="classpath:/aaandrey/todotree/web/resources/"
-		mapping="/**" />
+	<mvc:resources location="/spa/" mapping="/**" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
