@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import aaandrey.todotree.domain.PriorityType;
+import aaandrey.todotree.domain.SortRule;
 
 public class PlainRepresentation {
 	private Long id;
@@ -15,6 +16,7 @@ public class PlainRepresentation {
 	private Integer bottomWeight;
 	private Integer topWeight;
 	private Long userId;
+	private Set<SortRule> sortRules;
 
 	public Long getId() {
 		return id;
@@ -86,6 +88,14 @@ public class PlainRepresentation {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public Set<SortRule> getSortRules() {
+		return sortRules;
+	}
+
+	public void setSortRules(Set<SortRule> sortRules) {
+		this.sortRules = sortRules;
 	}
 
 }

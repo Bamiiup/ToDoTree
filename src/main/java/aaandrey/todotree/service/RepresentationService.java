@@ -53,6 +53,7 @@ public class RepresentationService implements IRepresentationService {
 		target.setTopPriority(source.getTopPriority());
 		target.setTopWeight(source.getTopWeight());
 		target.setTags(tagService.findOrCreate(source.getTags()));
+		target.setSortRules(source.getSortRules());
 	}
 
 	@Override

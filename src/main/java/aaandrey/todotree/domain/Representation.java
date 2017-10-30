@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -48,6 +50,10 @@ public class Representation {
 	@ManyToOne
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private User user;
+
+	@ElementCollection
+	@CollectionTable(name = "REPRESENTATION__SORT_RULE", joinColumns = @JoinColumn(name = "REPRESENTATION_ID"))
+	private Set<SortRule> sortRules = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -129,5 +135,14 @@ public class Representation {
 		}
 
 		user.addRepresentation(this, true);
+	}
+
+	public Set<SortRule> getSortRules() {
+		return sortRules;
+	}
+
+	public void setSortRules(Collection<SortRule> sortRules) {
+		this.getSortRules().clear();
+		sortRules.forEach(this.sortRules::add);
 	}
 }

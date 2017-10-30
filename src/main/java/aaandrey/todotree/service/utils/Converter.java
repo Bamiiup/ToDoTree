@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import aaandrey.todotree.domain.Tag;
 import aaandrey.todotree.domain.Todo;
 import aaandrey.todotree.domain.Representation;
+import aaandrey.todotree.domain.SortRule;
 import aaandrey.todotree.service.domain.PlainTag;
 import aaandrey.todotree.service.domain.PlainTodo;
 import aaandrey.todotree.service.domain.PlainRepresentation;
@@ -59,7 +60,18 @@ public class Converter {
 		result.setTopPriority(representation.getTopPriority());
 		result.setTopWeight(representation.getTopWeight());
 		result.setUserId(representation.getUser().getId());
+		result.setSortRules(representation.getSortRules().stream().map(Converter::copy).collect(Collectors.toSet()));
 
 		return result;
 	}
+
+	public static SortRule copy(SortRule sortRule) {
+		SortRule result = new SortRule();
+		result.setFieldName(sortRule.getFieldName());
+		result.setIsDirect(sortRule.getIsDirect());
+		result.setOrder(sortRule.getOrder());
+
+		return result;
+	}
+
 }
