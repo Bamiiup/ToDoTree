@@ -6,6 +6,7 @@ import AuthenticationContainer from './containers/AuthenticationContainer';
 import TodoEditorPage from './pages/TodoEditorPage';
 import TodoTreeContainer from './containers/TodoTreeContainer';
 import RepresentationEditorContainer from './containers/RepresentationEditorContainer';
+import RepresentationListContainer from './containers/RepresentationListContainer';
 
 import {HashRouter, Route} from 'react-router-dom'
 import {Provider} from 'react-redux';
@@ -36,6 +37,7 @@ class App extends React.Component {
             <Route exact path="/tree" component={TodoTreeContainer} />
 
             <Route exact path="/representationEditor/:id?" component={RepresentationEditorContainer}/>
+            <Route exact path="/representationList" component={RepresentationListContainer}/>
 
           </div>
         </HashRouter>

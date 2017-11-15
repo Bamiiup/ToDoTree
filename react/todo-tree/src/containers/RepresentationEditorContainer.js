@@ -1,7 +1,8 @@
 import React from 'react';
 import RepresentationEditor from './../components/RepresentationEditor';
 import {connect} from 'react-redux';
-import {update, set} from './../store/ui/representationEditor/Actions';
+import {update as updateRepresentationEditor, set as setRepresentationEditor} from './../store/ui/representationEditor/Actions';
+import {update as updateRepresentation, set as setRepresentation} from './../store/server/representation/Actions';
 import {representationService} from './../appContext/Context';
 
 class RepresentationEditorContainer extends React.Component {
@@ -12,13 +13,13 @@ class RepresentationEditorContainer extends React.Component {
       representationService.get(id).then(data => {
         return data.json();
       }).then(representation => {
-        this.props.dispatch(set({
+        this.props.dispatch(setRepresentationEditor({
           ...representation,
           tags: representation.tags.map(tag => tag.name).join(",")
         }));
       });
     } else {
-      this.props.dispatch(set({}));
+      this.props.dispatch(setRepresentationEditor({}));
     }
   }
 
@@ -42,27 +43,27 @@ class RepresentationEditorContainer extends React.Component {
 
   onChangeEndAfterDays = (event) => {
     let dayAmountAfterToday = this.parseInt(event.target.value);
-    this.props.dispatch(update({
+    this.props.dispatch(updateRepresentationEditor({
       dayAmountAfterToday
     }));
   }
 
   onChangeTags = (event) => {
-    this.props.dispatch(update({
+    this.props.dispatch(updateRepresentationEditor({
       tags: event.target.value
     }));
   }
 
   onChangePriorityFrom = (event) => {
     let priority = event.target.value === "" ? null : event.target.value;
-    this.props.dispatch(update({
+    this.props.dispatch(updateRepresentationEditor({
       bottomPriority: priority
     }));
   }
 
   onChangePriorityTo = (event) => {
     let priority = event.target.value === "" ? null : event.target.value;
-    this.props.dispatch(update({
+    this.props.dispatch(updateRepresentationEditor({
       topPriority: priority
     }));
   }
@@ -81,21 +82,21 @@ class RepresentationEditorContainer extends React.Component {
       isImportant = null;
     }
 
-    this.props.dispatch(update({
+    this.props.dispatch(updateRepresentationEditor({
       isImportant
     }));
   }
 
   onChangeWeightFrom = (event) => {
     let bottomWeight = this.parseInt(event.target.value);
-    this.props.dispatch(update({
+    this.props.dispatch(updateRepresentationEditor({
       bottomWeight
     }));
   }
 
   onChangeWeightTo = (event) => {
     let topWeight = this.parseInt(event.target.value);
-    this.props.dispatch(update({
+    this.props.dispatch(updateRepresentationEditor({
       topWeight
     }));
   }
@@ -109,12 +110,24 @@ class RepresentationEditorContainer extends React.Component {
 
   onClickSave = () => {
     if(this.props.match.params.id) {
-      representationService.update(this.getPlainRepresentation()).then(() => {
-        this.props.history.goBack();
+      representationService.update(this.getPlainRepresentation())
+        .then((data) => data.json()).then((representation) => {
+
+          //TODO: Add name field to representation and delete this
+          representation.name = representation.tags.map((tag => tag.name)).join(" ");
+
+          this.props.dispatch(updateRepresentation(representation));
+          this.props.history.goBack();
       });
     } else {
-      representationService.create(this.getPlainRepresentation()).then(() => {
-        this.props.history.goBack();
+      representationService.create(this.getPlainRepresentation())
+        .then((data) => data.json()).then((representation) => {
+
+          //TODO: Add name field to representation and delete this
+          representation.name = representation.tags.map((tag => tag.name)).join(" ");
+
+          this.props.dispatch(setRepresentation([representation]));
+          this.props.history.goBack();
       });
     }
   }

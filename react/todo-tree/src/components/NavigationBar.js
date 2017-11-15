@@ -12,7 +12,7 @@ const createLinks = (props) =>  {
           <Link className="nav-link" to="/tree">Tree</Link>
         </li>
         <li className="nav-item active">
-          <Link className="nav-link" to="/">
+          <Link className="nav-link" to="/representationList">
             Representations
           </Link>
         </li>

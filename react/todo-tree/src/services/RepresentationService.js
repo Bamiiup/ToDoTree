@@ -34,4 +34,24 @@ export default class RepresentationService {
       body: JSON.stringify(representation)
     });
   }
+
+  getList() {
+    return fetch(this.startUrl + "representations", {
+      method: "get",
+      headers: new Headers({
+        "Content-type": "application/json;chartSet=UTF-8",
+        "token": localStorage.getItem("token")
+	    })
+    });
+  }
+
+  remove(id) {
+    return fetch(this.startUrl + "representation/" + id, {
+      method: "delete",
+      headers: new Headers({
+        "Content-type": "application/json;chartSet=UTF-8",
+        "token": localStorage.getItem("token")
+	    })
+    });
+  }
 }

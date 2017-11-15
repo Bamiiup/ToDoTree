@@ -53,8 +53,8 @@ export default class RepresentationEditor extends React.Component {
                       value={this.props.bottomPriority === null ? "" : this.props.bottomPriority}
                       onChange={this.props.onChangePriorityFrom}>
                       <option value=""> -- select an option -- </option>
-                      <option value="veryLow">
-                        Very Low
+                      <option value="veryHigh">
+                        Very High
                       </option>
                       <option value="high">High</option>
                       <option value="medium">Medium</option>

@@ -7,7 +7,8 @@ const startState = {
   topPriority: null,
   isImportant: null,
   bottomWeight: null,
-  topWeight: null
+  topWeight: null,
+  sortRules: []
 };
 
 const update = (state, action) => {
