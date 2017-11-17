@@ -50,6 +50,7 @@ public class RepresentationService implements IRepresentationService {
 		target.setBottomWeight(source.getBottomWeight());
 		target.setDayAmountAfterToday(source.getDayAmountAfterToday());
 		target.setIsImportant(source.getIsImportant());
+		target.setName(source.getName());
 		target.setTopPriority(source.getTopPriority());
 		target.setTopWeight(source.getTopWeight());
 		target.setTags(tagService.findOrCreate(source.getTags()));

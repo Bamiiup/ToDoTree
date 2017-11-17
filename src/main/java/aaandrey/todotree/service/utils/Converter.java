@@ -55,6 +55,7 @@ public class Converter {
 		result.setBottomWeight(representation.getBottomWeight());
 		result.setDayAmountAfterToday(representation.getDayAmountAfterToday());
 		result.setId(representation.getId());
+		result.setName(representation.getName());
 		result.setIsImportant(representation.getIsImportant());
 		result.setTags(representation.getTags().stream().map(Converter::toPlain).collect(Collectors.toSet()));
 		result.setTopPriority(representation.getTopPriority());

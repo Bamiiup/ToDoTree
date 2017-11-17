@@ -15,6 +15,7 @@ public class PlainRepresentation {
 	private Set<PlainTag> tags = new HashSet<>();
 	private Integer bottomWeight;
 	private Integer topWeight;
+	private String name;
 	private Long userId;
 	private Set<SortRule> sortRules;
 
@@ -80,6 +81,14 @@ public class PlainRepresentation {
 
 	public void setTopWeight(Integer topWeight) {
 		this.topWeight = topWeight;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Long getUserId() {

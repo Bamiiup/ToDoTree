@@ -24,6 +24,9 @@ public class Representation {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
 	private Long id;
+	
+	@Column(name = "NAME", nullable = false)
+	private String name;
 
 	@Column(name = "DAY_AMOUNT_AFTER_TODAY")
 	private Integer dayAmountAfterToday;
@@ -118,6 +121,14 @@ public class Representation {
 
 	public void setTopWeight(Integer topWeight) {
 		this.topWeight = topWeight;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public User getUser() {
