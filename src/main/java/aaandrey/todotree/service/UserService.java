@@ -14,9 +14,21 @@ public class UserService implements IUserService {
 	@Autowired
 	private UserRepository repository;
 
+	private void validateForCreate(User user) {
+		if (user.getLogin() == null) {
+			throw ServiceValidationException.fieldIsNullOrEmpty(User.class, "login", user.getId());
+		}
+
+		if (user.getPassword() == null) {
+			throw ServiceValidationException.fieldIsNullOrEmpty(User.class, "password", user.getId());
+		}
+	}
+
 	@Override
 	@Transactional
 	public User create(User user) {
+		validateForCreate(user);
+
 		repository.save(user);
 
 		User result = new User();
