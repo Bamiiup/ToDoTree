@@ -3,7 +3,9 @@ import RepresentationEditor from './../components/RepresentationEditor';
 import {connect} from 'react-redux';
 import {update as updateRepresentationEditor, set as setRepresentationEditor} from './../store/ui/representationEditor/Actions';
 import {update as updateRepresentation, set as setRepresentation} from './../store/server/representation/Actions';
+import {tabs, sortFields} from './../store/ui/representationEditor/Reducer';
 import {representationService} from './../appContext/Context';
+import RepresentationEditorUtils from './../utils/RepresentationEditorUtils';
 
 class RepresentationEditorContainer extends React.Component {
   initialize() {
@@ -39,6 +41,12 @@ class RepresentationEditorContainer extends React.Component {
     }
 
     return parseInt(line, 10);
+  }
+
+  onChangeName = (event) => {
+    this.props.dispatch(updateRepresentationEditor({
+      name: event.target.value
+    }));
   }
 
   onChangeEndAfterDays = (event) => {
@@ -101,6 +109,18 @@ class RepresentationEditorContainer extends React.Component {
     }));
   }
 
+  onClickFilter = () => {
+    this.props.dispatch(updateRepresentationEditor({
+      activatedTab: tabs.filter
+    }));
+  }
+
+  onClickSort = () => {
+    this.props.dispatch(updateRepresentationEditor({
+      activatedTab: tabs.sort
+    }));
+  }
+
   getPlainRepresentation() {
     return {
       ...this.props.representation,
@@ -113,9 +133,6 @@ class RepresentationEditorContainer extends React.Component {
       representationService.update(this.getPlainRepresentation())
         .then((data) => data.json()).then((representation) => {
 
-          //TODO: Add name field to representation and delete this
-          representation.name = representation.tags.map((tag => tag.name)).join(" ");
-
           this.props.dispatch(updateRepresentation(representation));
           this.props.history.goBack();
       });
@@ -123,18 +140,73 @@ class RepresentationEditorContainer extends React.Component {
       representationService.create(this.getPlainRepresentation())
         .then((data) => data.json()).then((representation) => {
 
-          //TODO: Add name field to representation and delete this
-          representation.name = representation.tags.map((tag => tag.name)).join(" ");
-
           this.props.dispatch(setRepresentation([representation]));
           this.props.history.goBack();
       });
     }
   }
 
+  onClickNew = () => {
+    const oldSortRules = this.props.representation.sortRules;
+    let newSortRules = [...oldSortRules];
+    const firstNotUsedField = RepresentationEditorUtils.findFirstNotUsedSortField(oldSortRules);
+
+    if(firstNotUsedField === undefined) {
+      //TODO: replace this by some meaning message for user
+      return;
+    }
+
+    newSortRules.push({
+      fieldName: firstNotUsedField,
+      order: oldSortRules.length,
+      isDirect: true
+    });
+
+    this.props.dispatch(updateRepresentationEditor({sortRules: newSortRules}));
+  }
+
+  onClickRemoveSortRule = (fieldName) => {
+    this.props.dispatch(updateRepresentationEditor({
+      sortRules: this.props.representation.sortRules.filter(sortRule => {
+        return sortRule.fieldName !== fieldName;
+      })
+    }));
+  }
+
+  onClickSortDirection = (fieldName) => {
+    this.props.dispatch(updateRepresentationEditor({
+      sortRules: this.props.representation.sortRules.map(sortRule => {
+        if(sortRule.fieldName !== fieldName) {
+          return sortRule;
+        } else {
+          return {
+            ...sortRule,
+            isDirect: !sortRule.isDirect
+          };
+        }
+      })
+    }));
+  }
+
+  onChangeFieldName = (prevFieldName, nextFieldName) => {
+    this.props.dispatch(updateRepresentationEditor({
+      sortRules: this.props.representation.sortRules.map(sortRule => {
+        if(sortRule.fieldName !== prevFieldName) {
+          return sortRule;
+        } else {
+          return {
+            ...sortRule,
+            fieldName: nextFieldName
+          };
+        }
+      })
+    }));
+  }
+
   render() {
     return(
       <RepresentationEditor {...this.props.representation}
+        onChangeName={this.onChangeName}
         onChangeEndAfterDays={this.onChangeEndAfterDays}
         onChangeTags={this.onChangeTags}
         onChangePriorityTo={this.onChangePriorityTo}
@@ -142,7 +214,13 @@ class RepresentationEditorContainer extends React.Component {
         onChangeImportant={this.onChangeImportant}
         onChangeWeightTo={this.onChangeWeightTo}
         onChangeWeightFrom={this.onChangeWeightFrom}
-        onClickSave={this.onClickSave}/>
+        onClickSave={this.onClickSave}
+        onClickSort={this.onClickSort}
+        onClickFilter={this.onClickFilter}
+        onClickNew={this.onClickNew}
+        onClickRemoveSortRule={this.onClickRemoveSortRule}
+        onClickSortDirection={this.onClickSortDirection}
+        onChangeFieldName={this.onChangeFieldName}/>
     );
   }
 }

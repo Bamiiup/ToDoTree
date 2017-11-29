@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import aaandrey.todotree.domain.Tag;
-import aaandrey.todotree.domain.User;
 import aaandrey.todotree.repositories.TagRepository;
 import aaandrey.todotree.service.domain.PlainTag;
 
@@ -19,15 +18,9 @@ public class TagService implements ITagService {
 	@Autowired
 	private TagRepository repository;
 
-	private void validateForCreate(PlainTag plainTag) {
-		if (plainTag.getName() == null || plainTag.getName().isEmpty()) {
-			throw ServiceValidationException.fieldIsNullOrEmpty(Tag.class, "name", plainTag.getId());
-		}
-	}
-
 	@Override
 	@Transactional
-	public List<Tag> findOrCreate(Long userId, Collection<PlainTag> plainTags) {
+	public List<Tag> findOrCreate(Collection<PlainTag> plainTags) {
 		return plainTags.stream().map(plainTag -> {
 
 			List<Tag> foundTags = repository.findByName(plainTag.getName());
@@ -35,7 +28,6 @@ public class TagService implements ITagService {
 			if (foundTags.size() == 1) {
 				return foundTags.get(0);
 			} else {
-				validateForCreate(plainTag);
 				Tag tag = new Tag(plainTag.getName());
 				repository.save(tag);
 				return tag;

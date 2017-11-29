@@ -8,6 +8,6 @@ import aaandrey.todotree.service.domain.PlainTag;
 
 public interface ITagService {
 
-	List<Tag> findOrCreate(Long userId, Collection<PlainTag> plainTags);
+	List<Tag> findOrCreate(Collection<PlainTag> plainTags);
 
 }

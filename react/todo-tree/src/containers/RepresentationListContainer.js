@@ -12,12 +12,6 @@ class RepresentationListContainer extends React.Component {
     }
 
     representationService.getList().then((data) => data.json()).then(representations => {
-
-      //TODO: Add name field to representation and delete this
-      representations.forEach(representation => {
-        representation.name = representation.tags.map((tag => tag.name)).join(" ");
-      });
-
       this.props.dispatch(set(representations));
     });
   }

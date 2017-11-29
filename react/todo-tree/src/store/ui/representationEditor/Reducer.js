@@ -1,6 +1,21 @@
 import {UPDATE, SET} from './Actions';
 
+export const tabs = {
+  filter: "filter",
+  sort: "sort"
+};
+
+export const sortFields = {
+  priority: "priority",
+  weight: "weight",
+  important: "important",
+  startDate: "startDate",
+  endDate: "endDate",
+  name: "name"
+};
+
 const startState = {
+  name: null,
   dayAmountAfterToday: null,
   tags: "",
   bottomPriority: null,
@@ -8,7 +23,8 @@ const startState = {
   isImportant: null,
   bottomWeight: null,
   topWeight: null,
-  sortRules: []
+  sortRules: [],
+  activatedTab: tabs.filter
 };
 
 const update = (state, action) => {
