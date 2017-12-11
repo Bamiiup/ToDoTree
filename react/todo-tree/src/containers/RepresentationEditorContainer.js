@@ -3,7 +3,7 @@ import RepresentationEditor from './../components/RepresentationEditor';
 import {connect} from 'react-redux';
 import {update as updateRepresentationEditor, set as setRepresentationEditor} from './../store/ui/representationEditor/Actions';
 import {update as updateRepresentation, set as setRepresentation} from './../store/server/representation/Actions';
-import {tabs, sortFields} from './../store/ui/representationEditor/Reducer';
+import {tabs} from './../store/ui/representationEditor/Reducer';
 import {representationService} from './../appContext/Context';
 import RepresentationEditorUtils from './../utils/RepresentationEditorUtils';
 

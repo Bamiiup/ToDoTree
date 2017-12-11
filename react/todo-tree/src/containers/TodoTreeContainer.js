@@ -3,14 +3,32 @@ import TodoTree from './../components/TodoTree';
 import {connect} from 'react-redux';
 import {todoByIdStates} from './../store/server/todo/Reducer';
 import {todoService} from './../appContext/Context';
-import {set, update as updateTodo, remove, updateIsCompleted} from './../store/server/todo/Actions';
-import {update as updateUiTodo} from './../store/ui/todoTree/Actions';
+import {set as setTodoById, update as updateTodo, remove, updateIsCompleted} from './../store/server/todo/Actions';
+import {set as setRepresentations} from './../store/server/representation/Actions';
+import {update as updateUiTodo, updateSelectedRepresentationId} from './../store/ui/todoTree/Actions';
+import {representationListStates} from './../store/server/representation/Reducer';
+import {representationService} from './../appContext/Context';
 
 /*
   TODO: 1. finish implementation
 */
 class TodoTreeContainer extends React.Component {
   componentDidMount() {
+    this.initializeTodo();
+    this.initializeRepresentation();
+  }
+
+  initializeRepresentation() {
+    if(this.props.state === representationListStates.loaded) {
+      return;
+    }
+
+    representationService.getList().then((data) => data.json()).then(representations => {
+      this.props.dispatch(setRepresentations(representations));
+    });
+  }
+
+  initializeTodo() {
     let todoByIdState = this.props.todoByIdState;
 
     if(todoByIdState !== todoByIdStates.empty
@@ -28,7 +46,7 @@ class TodoTreeContainer extends React.Component {
         };
       });
 
-      this.props.dispatch(set(todoById));
+      this.props.dispatch(setTodoById(todoById));
     });
   }
 
@@ -80,17 +98,24 @@ class TodoTreeContainer extends React.Component {
     });*/
   }
 
+  onChangeSelectedRepresentation = (event) => {
+    this.props.dispatch(updateSelectedRepresentationId(event.target.value));
+  }
+
   render() {
     return(
       <TodoTree
-        {...this.props}
         indent={20}
+        todoById={this.props.todoById}
+        representations={Object.values(this.props.representationById)}
+        selectedRepresentation={this.props.representationById[this.props.selectedRepresentationId]}
         onClickNew={this.onClickNew}
         onClickExpand={this.onClickExpand}
         onClickTodo={this.onClickTodo}
         onClickImportantFlag={this.onClickImportantFlag}
         onClickRemove={this.onClickRemove}
-        onClickComplete={this.onClickComplete}/>
+        onClickComplete={this.onClickComplete}
+        onChangeSelectedRepresentation={this.onChangeSelectedRepresentation}/>
     );
   }
 }
@@ -109,7 +134,10 @@ const mapStateToProps = (state) => {
 
   return {
     todoById,
-    todoByIdState: state.server.todoList.state
+    todoByIdState: state.server.todoList.state,
+    representationById: state.server.representation.byId,
+    representationListState: state.server.representation.state,
+    selectedRepresentationId: state.ui.todoTree.selectedRepresentationId
   };
 }
 

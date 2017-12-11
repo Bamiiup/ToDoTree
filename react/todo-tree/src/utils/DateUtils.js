@@ -23,4 +23,30 @@ export default class DateUtils {
 
     return date;
   }
+
+  static cloneDate(date) {
+    let time = date.getTime();
+    let result = new Date();
+    result.setDate(time);
+    
+    return result;
+  }
+
+  static dateWithoutTime(rawDate) {
+    let result = DateUtils.cloneDate(rawDate);
+    result.setHours(0);
+    result.setMinutes(0);
+    result.setSeconds(0);
+    result.setMilliseconds(0);
+
+    return result;
+  }
+
+  static addDays(date, dayNumber) {
+    let result = DateUtils.cloneDate(date);
+    let resultTime = result.getTime() + 24 * 60 * 60 * 1000 * dayNumber;
+    result.setTime(resultTime);
+
+    return result;
+  }
 }

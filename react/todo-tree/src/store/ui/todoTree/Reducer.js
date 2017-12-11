@@ -1,5 +1,5 @@
 import {SET, ADD, REMOVE} from './../../server/todo/Actions';
-import {UPDATE} from './Actions';
+import {UPDATE, UPDATE_SELECTED_REPRESENTATION_ID} from './Actions';
 
 const expandTypes = {
   isExpanded: "isExpanded",
@@ -8,7 +8,8 @@ const expandTypes = {
 }
 
 let startState = {
-  uiTodoById: {}
+  uiTodoById: {},
+  selectedRepresentationId: null
 };
 
 const defineTodoExpandType = (todo) => {
@@ -76,6 +77,7 @@ const update = (state, action) => {
   let newUiTodo = action.uiTodo;
   let oldUiTodo = state.uiTodoById[newUiTodo.id];
   let result = {
+    ...state,
     uiTodoById: {
       ...state.uiTodoById,
       [newUiTodo.id]: {
@@ -85,6 +87,15 @@ const update = (state, action) => {
     }
   };
 
+
+  return result;
+};
+
+const updateSelectedRepresentationId = (state, action) => {
+  let result = {
+    ...state,
+    selectedRepresentationId: action.id
+  };
 
   return result;
 };
@@ -130,6 +141,10 @@ const todoTreeReducer = (state = startState, action, serverTodoListState) => {
 
   if(action.type === UPDATE) {
     return update(state, action);
+  }
+
+  if(action.type === UPDATE_SELECTED_REPRESENTATION_ID) {
+    return updateSelectedRepresentationId(state, action);
   }
 
   if(action.type === REMOVE) {
