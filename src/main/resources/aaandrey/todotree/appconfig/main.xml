@@ -50,7 +50,7 @@
 		<property name="packagesToScan" value="aaandrey.todotree.domain" />
 	</bean>
 
-	<bean id="tokenManager" class="aaandrey.todotree.security.TokenManager">
+	<bean id="tokenManager" class="aaandrey.todotree.rest.security.TokenManager">
 		<constructor-arg name="privateKey" value="SuperSecretKey" />
 	</bean>
 
